@@ -255,11 +255,11 @@ Styles for the Tool (`app.html`)
 .control-group { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
 .control-group label { font-size: 0.9rem; color: var(--text-color-light); }
 input[type="range"] { flex-grow: 1; margin-left: 1rem; }
-input[type="text"] { flex: 1; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
-input[type="number"] {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px;}
-input[type="date"] {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;}
-textarea {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; resize: vertical;}
-select {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;}
+input[type="text"] { flex: 1; width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(--border-radius-small); }
+input[type="number"] {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(--border-radius-small); font-size: 14px;}
+input[type="date"] {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(--border-radius-small);}
+textarea {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(--border-radius-small); resize: vertical;}
+select {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(--border-radius-small);}
 
 .actions {
     display: flex;
@@ -275,7 +275,7 @@ select {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;}
 .upload-actions { display: flex; gap: 10px; align-items: start; flex-wrap: wrap; }
 .upload-wrapper { position: relative; }
 .upload-label { display: inline-block; } /* Allow button styling */
-.pro-badge { background: var(--pro-color); color: var(--text-color-dark); font-size: 0.6rem; font-weight: bold; padding: 2px 5px; border-radius: 4px; position: absolute; top: -8px; right: -8px; }
+.pro-badge { background: var(--pro-color); color: var(--text-color-dark); font-size: 0.6rem; font-weight: bold; padding: 2px 5px; border-radius: var(--border-radius-small); position: absolute; top: -8px; right: -8px; }
 input[type="file"] { display: none; }
 
 .disabled, button.disabled {
@@ -349,7 +349,7 @@ Styles for Campaign pages
     display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;
 }
 .campaign-summary {
-    margin-top: 20px; padding: 15px; background: rgb(248, 249, 250); border-radius: 8px; display: block;
+    margin-top: 20px; padding: 15px; background: rgb(248, 249, 250); border-radius: (--border-radius-medium); display: block;
 }
 .campaign-summary-grid {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
@@ -564,6 +564,10 @@ Styles for Auth Page (`login.html`)
     gap: 1.5rem;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
+}
+.auth-footer-link {
+    text-align: center;
+    padding: 1rem 0 0 0;    
 }
 
 .auth-tabs h2 {
