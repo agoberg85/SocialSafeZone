@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Brief - SocialSafeZone</title>
+    <link rel="stylesheet" href="static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display.swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
+    <style>
+        .brief-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .brief-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .format-group {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .format-header {
+            background: #f9fafb;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        .format-header:hover {
+            background: #f3f4f6;
+        }
+
+        .format-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .format-content.active {
+            display: block;
+        }
+
+        .creative-card {
+            background: #fafafa;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background-color: #f8dbbd;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending { background: #fee2e2; color: #991b1b; }
+        .status-in_progress { background: #dbeafe; color: #1e40af; }
+        .status-review { background: #fef3c7; color: #92400e; }
+        .status-approved { background: #d1fae5; color: #065f46; }
+
+        .file-specs {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0f2fe;
+        }
+
+        .spec-row:last-child {
+            border-bottom: none;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #f3f4f6;
+            color: #333;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        /* Safe zone canvas container */
+        .safezone-preview {
+            position: relative;
+            display: inline-block;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px auto;
+            display: block;
+            width: 60%;
+        }
+
+        .safezone-preview canvas {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }        
+
+        .upload-actions { display: flex; gap: 0.75rem; align-items: start; flex-wrap: wrap; }
+        .upload-wrapper { position: relative; }        
+    </style>
+</head>
+<body>
+    <div class="brief-container">
+        <!-- Loading State -->
+        <div id="loading-state" style="text-align: center; padding: 100px 20px;">
+            <p>Loading creative brief...</p>
+        </div>
+
+        <!-- Password Protection -->
+        <div id="password-gate" style="display: none; text-align: center; padding: 100px 20px;">
+            <div style="max-width: 400px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                <h2 style="margin: 0 0 20px 0;">🔒 Password Protected</h2>
+                <p style="color: #666; margin-bottom: 20px;">This brief is password protected. Please enter the password to continue.</p>
+                <input type="password" id="password-input" placeholder="Enter password" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px;">
+                <button id="password-submit" class="btn btn-primary" style="width: 100%;">Access Brief</button>
+                <div id="password-error" style="color: #ef4444; margin-top: 10px; display: none;">Incorrect password</div>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" style="display: none; text-align: center; padding: 100px 20px;">
+            <h2>⚠️ Brief Not Found</h2>
+            <p style="color: #666;">This brief link is invalid or has expired.</p>
+        </div>
+
+        <!-- Brief Content -->
+        <div id="brief-content" style="display: none;">
+            
+            <!-- Header -->
+            <div class="brief-header">
+                <h1 id="campaign-name" style="margin: 0 0 10px 0; font-size: 32px;">Campaign Name</h1>
+                <p id="campaign-client" style="margin: 0 0 5px 0; opacity: 0.9; font-size: 18px;"></p>
+                <p id="campaign-description" style="margin: 0; opacity: 0.8;"></p>
+                
+                <div style="margin-top: 20px; display: flex; gap: 15px;">
+                    <button id="download-pdf-btn" class="btn" style="background: white; color: #667eea;">
+                        📥 Download PDF
+                    </button>
+                    <span style="opacity: 0.7; font-size: 14px; align-self: center;">
+                        Powered by SocialSafeZone
+                    </span>
+                </div>
+            </div>
+
+            <!-- Format Groups -->
+            <div id="formats-container"></div>
+
+        </div>
+    </div>
+
+<!-- Safe Zone Test Modal -->
+<div id="safezone-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="safezone-modal-title">Safe Zone Test</h3>
+            <button class="modal-close" onclick="closeSafeZoneModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <!-- Upload controls -->
+            <div style="margin-bottom: 20px;">
+                <div style="text-align: center;">
+                    <p id="safezone-format-info" style="margin: 0 0 15px 0; font-size: 14px; color: #666;">
+                        <!-- Will show: "Instagram Story (1080×1920px)" -->
+                    </p>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+
+
+                        <div class="upload-wrapper">
+                            <label for="brief-image-upload" class="btn btn-primary">
+                                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">image</span>
+                                Upload Image</label>
+                                <input 
+                                    type="file" 
+                                    id="brief-image-upload" 
+                                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                                    aria-label="Upload image file"
+                                >
+                        </div>
+
+
+                        <div class="upload-wrapper">
+                
+                            <label for="brief-video-upload" class="btn btn-primary">
+                                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">video_file</span>
+                                Upload Video</label>
+                                <input 
+                                    type="file" 
+                                    id="brief-video-upload" 
+                                    accept="video/mp4,video/webm"
+                                    aria-label="Upload video file"
+                                >
+                        </div>
+
+                    </div>
+                    
+                    <p style="margin: 10px 0 0 0; font-size: 12px; color: #999;">
+                        Max 10MB for images, 100MB for videos
+                    </p>
+                </div>
+            </div>
+
+            <!-- Canvas preview -->
+            <div class="safezone-preview">
+                <video id="brief-safezone-video" playsinline muted loop style="display: none; max-width: 100%; height: auto;"></video>
+                <canvas id="brief-safezone-canvas" style="position: relative;"></canvas>
+            </div>
+
+            <!-- Mask controls -->
+            <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="margin: 0 0 15px 0; font-size: 14px;">Safe Zone Overlay</h4>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-size: 13px; color: #666;">Mask Color</label>
+                        <input type="color" id="brief-mask-color" value="#FF0000" style="width: 100%; height: 40px; border: 1px solid #ddd; border-radius: 6px;">
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 5px; font-size: 13px; color: #666;">Opacity</label>
+                        <input type="range" id="brief-mask-opacity" min="0" max="1" step="0.1" value="0.4" style="width: 100%;">
+                        <span id="brief-opacity-value" style="font-size: 12px; color: #666;">40%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clear button -->
+            <div style="margin-top: 20px; text-align: center;">
+                <button id="brief-clear-upload" class="btn" style="background: #ef4444; color: white;">Clear Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- File Specs Modal -->
+<div id="specs-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="specs-modal-title">File Specifications</h3>
+            <button class="modal-close" onclick="closeSpecsModal()">×</button>
+        </div>
+        <div class="modal-body" id="specs-modal-body">
+            <!-- Specs will be populated here -->
+        </div>
+    </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="static/campaign-pdf.js"></script>
+    <script src="static/brief.js"></script>
+</body>
+</html>

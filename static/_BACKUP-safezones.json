@@ -1,0 +1,148 @@
+{
+    "Instagram": {
+        "Story (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "safeZone": { "top": 250, "right": 0, "bottom": 250, "left": 0 },
+            "link": "https://www.outfy.com/blog/instagram-safe-zone/#instagram-safe-zone-dimensions-and-guidelines",
+            "description": "Keep text and logos away from the top and bottom edges."
+        },
+        "Reel (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "dangerZones": [
+                { "x": 0, "y": 0, "width": 1080, "height": 108 },
+                { "x": 0, "y": 1600, "width": 1080, "height": 320 },
+                { "x": 0, "y": 0, "width": 60, "height": 1920 },
+                { "x": 960, "y": 0, "width": 120, "height": 1920 }
+            ],
+            "description": "Reels have less vertical space than stories due to UI.",
+            "link": "https://www.outfy.com/blog/instagram-safe-zone/#instagram-safe-zone-dimensions-and-guidelines"
+        },            
+        "Post (Square)": {
+            "width": 1080,
+            "height": 1080,
+            "safeZone": { "top": 50, "right": 50, "bottom": 50, "left": 50 },
+            "description": "A small safe margin for square posts is recommended."
+        },
+        "Post (Horizontal)": {
+            "width": 1080,
+            "height": 608,
+            "safeZone": { "top": 50, "right": 50, "bottom": 50, "left": 50 },
+            "description": "A small safe margin for horizontal posts is recommended."
+        }        
+    },
+    "Facebook": {
+        "Story (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "safeZone": { "top": 268, "right": 65, "bottom": 384, "left": 65 },
+            "description": "Facebook Stories have significant UI at the top and bottom.",
+            "link": "https://www.facebook.com/business/help/980593475366490?id=1240182842783684"
+        },
+        "Reel (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "safeZone": { "top": 268, "right": 65, "bottom": 672, "left": 65 },
+            "description": "Facebook Reels have a larger bottom safe area than Stories.",
+            "link": "https://www.facebook.com/business/help/980593475366490?id=1240182842783684"
+        },            
+        "Feed Ad (4:5)": {
+            "width": 1080,
+            "height": 1350,
+            "safeZone": { "top": 50, "right": 50, "bottom": 50, "left": 50 },
+            "description": "Standard safe margin for vertical feed ads."
+        },
+        "Feed Ad (1:1)": {
+            "width": 1080,
+            "height": 1080,
+            "safeZone": { "top": 24, "right": 90, "bottom": 24, "left": 90 },
+            "description": "Sides visible on desktop, top/bottom on mobile.",
+            "link": "https://snappa.com/blog/facebook-cover-photo-size/"
+        },
+        "Cover Image (16:7)": {
+            "width": 820,
+            "height": 360,
+            "safeZone": { "top": 50, "right": 50, "bottom": 50, "left": 50 },
+            "description": "Standard safe margin for square feed ads."
+        }          
+    },
+"TikTok": {
+        "Video (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "description": "The TikTok UI covers significant portions of the screen.",
+            "link": "https://ads.tiktok.com/help/article/tiktok-interactive-add-on-download-card-ad-specifications?lang=en",
+            "dangerZones": [
+                { "x": 0, "y": 0, "width": 1080, "height": 252 },
+                { "x": 0, "y": 1280, "width": 1080, "height": 640 }, 
+                { "x": 0, "y": 0, "width": 120, "height": 1920 },
+                { "x": 960, "y": 0, "width": 120, "height": 1920 }, 
+                { "x": 840, "y": 372, "width": 120, "height": 960 }
+            ]
+        }
+    },
+"Youtube": {
+    "Vertical (9:16)": {
+        "width": 1080,
+        "height": 1920,
+        "description": "YouTube vertical video ads have UI elements that cover portions of the screen.",
+        "link": "https://support.google.com/google-ads/answer/13547298?hl=en",
+        "dangerZones": [
+            { "x": 0, "y": 0, "width": 1080, "height": 288 },
+            { "x": 0, "y": 1248, "width": 1080, "height": 672 },
+            { "x": 0, "y": 0, "width": 48, "height": 1920 },
+            { "x": 888, "y": 0, "width": 192, "height": 1920 }
+        ]
+    },
+    "Horizontal (16:9)": {
+        "width": 1920,
+        "height": 1080,
+        "description": "YouTube horizontal video ads have UI elements that cover portions of the screen.",
+        "link": "https://support.google.com/google-ads/answer/13547298?hl=en",
+        "dangerZones": [
+            { "x": 0, "y": 0, "width": 1920, "height": 38 },
+            { "x": 0, "y": 693, "width": 1920, "height": 387 },
+            { "x": 0, "y": 0, "width": 38, "height": 1080 },
+            { "x": 1758, "y": 0, "width": 162, "height": 1080 },
+            { "x": 0, "y": 0, "width": 496, "height": 183 },
+            { "x": 1445, "y": 0, "width": 475, "height": 133 }
+        ]
+    },
+    "Shorts (9:16)": {
+        "width": 1080,
+        "height": 1920,
+        "safeZone": { "top": 140, "right": 190, "bottom": 270, "left": 70 },
+        "description": "Allow room for YT UI elements to the right and at the bottom"
+    } 
+},
+    "Snapchat": {
+        "Ad (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "description": "Keep critical elements within the central area.",
+            "link": "https://businesshelp.snapchat.com/s/article/safe-zones?language=en_US",
+            "dangerZones": [
+                { "x": 0, "y": 0, "width": 1080, "height": 192 },
+                { "x": 0, "y": 1248, "width": 1080, "height": 672 },
+                { "x": 0, "y": 0, "width": 65, "height": 1920 },
+                { "x": 1015, "y": 0, "width": 65, "height": 1920 },
+                { "x": 918, "y": 1056, "width": 162, "height": 864 }
+            ]
+        }
+    },
+    "LinkedIn": {
+        "Video (9:16)": {
+            "width": 1080,
+            "height": 1920,
+            "description": "Keep critical elements within the central area.",
+            "dangerZones": [
+                { "x": 0, "y": 0, "width": 1080, "height": 108 },
+                { "x": 0, "y": 1600, "width": 1080, "height": 320 },
+                { "x": 0, "y": 0, "width": 60, "height": 1920 },
+                { "x": 1020, "y": 0, "width": 60, "height": 1920 },
+                { "x": 918, "y": 1150, "width": 120, "height": 770 }
+            ]
+        }
+    }        
+}

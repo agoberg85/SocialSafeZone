@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Builder - SocialSafeZone</title>
+    <link rel="stylesheet" href="static/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display.swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* Prevent flash of wrong content */
+        #landing-view,
+        #campaign-view {
+            display: none;
+        }
+        
+        /* Hide campaigns content until loaded */
+        #campaigns-list,
+        #campaigns-empty {
+            display: none;
+        }
+        
+        /* Loading state */
+        #auth-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            flex-direction: column;
+            gap: 15px;
+        }
+    </style>
+    
+
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="index.html" class="logo">SocialSafeZone</a>
+            <div class="nav-panel">
+                <div></div>
+                <ul class="nav-links">
+                    <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
+                    <li><a href="campaigns.html" class="nav-link">Build Campaign</a></li>
+                    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div id="user-session-cta">
+                    <!-- Default state (user is logged out) -->
+                    <a href="login.html" id="login-button-nav" class="btn btn-primary nav-cta">Login / Sign Up</a>
+    
+                    <!-- Logged-in state (hidden by default) -->
+                    <div id="user-menu" class="hidden">
+                        <a href="profile.html" id="welcome-link" class="nav-link">Welcome!</a>
+                        <button id="logout-button" class="btn btn-danger">Logout</button>
+                    </div>
+    
+                </div>
+            </div>
+            <button class="hamburger">
+                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">menu</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container topgap">
+      
+
+        <!-- Landing Page Section (shown to Free/Pro users and logged-out users) -->
+        <div id="landing-view" style="display: none;">
+            <!-- Hero Section -->
+            <section>
+                <div class="container" style="max-width: 900px; margin: 0 auto;">
+                    <h1 style="font-size: 3rem; margin-bottom: 20px; font-weight: 700;">Campaign Builder</h1>
+                    <p style="font-size: 1.3rem; opacity: 0.95; margin-bottom: 40px;">
+                        Plan, organize, and spec out your entire creative campaign in one place. Generate professional PDFs for your team and clients.
+                    </p>
+                    
+                    <!-- Dynamic CTA based on user tier -->
+                    <div id="hero-cta"></div>
+                </div>
+            </section>
+
+            <!-- Feature Showcase -->
+            <section style="padding: 2rem 0;">
+                <div class="container">
+                    <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 60px; color: #1f2937;">What is Studio?</h2>
+                    
+                    <div class="studio-features-grid">
+                        <!-- Feature 1 -->
+                        <div class="studio-features-card">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">📋</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">Organize Campaigns</h3>
+                            <p style="color: #6b7280; line-height: 1.6;">
+                                Create campaigns with multiple creatives across platforms. Track Instagram Stories, Facebook Ads, OOH, Display, and custom formats all in one place.
+                            </p>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="studio-features-card">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">💰</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">Media Planning</h3>
+                            <p style="color: #6b7280; line-height: 1.6;">
+                                Add budgets, impressions, reach, CPM, flight dates, and placement details. Auto-calculate campaign totals and date ranges.
+                            </p>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="studio-features-card">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">📄</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">Professional PDFs</h3>
+                            <p style="color: #6b7280; line-height: 1.6;">
+                                Generate agency-grade specification sheets with all creative details, dimensions, safe zones, and media planning data in one PDF.
+                            </p>
+                        </div>
+
+                        <!-- Feature 4 -->
+                        <div class="studio-features-card">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">🎨</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">Custom Formats</h3>
+                            <p style="color: #6b7280; line-height: 1.6;">
+                                Not just social media - add billboards, transit ads, print formats, digital display, or any custom size you need.
+                            </p>
+                        </div>
+
+                        <!-- Feature 5 -->
+                        <div class="studio-features-card">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">✏️</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">Easy Editing</h3>
+                            <p style="color: #6b7280; line-height: 1.6;">
+                                Click any creative to edit details, update budgets, change dates, or add notes. Changes sync instantly to your spec sheet.
+                            </p>
+                        </div>
+
+                        <!-- Feature 6 -->
+                        <div class="studio-features-card">
+                            <div style="font-size: 3rem; margin-bottom: 15px;">👥</div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #1f2937;">Client-Ready</h3>
+                            <p style="color: #6b7280; line-height: 1.6;">
+                                Share professional PDFs with clients and team members. Everything they need to know about creative specs in one document.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Campaign List Section (shown to Studio users) -->
+        <div id="campaign-view" style="display: none;">
+            <!-- Your existing campaigns list HTML goes here -->
+            <div class="container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h1 style="font-size: 2rem; margin: 0;">My Campaigns</h1>
+                    <button id="new-campaign-btn" class="btn btn-primary">+ New Campaign</button>
+                </div>
+
+                <div id="campaigns-list" class="campaigns-grid">
+                    <!-- Campaigns will be loaded here by JavaScript -->
+                </div>
+
+                <div id="campaigns-empty" class="hidden" style="text-align: center; padding: 80px 20px; color: #9ca3af;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">📋</div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 10px; color: #6b7280;">No campaigns yet</h2>
+                    <p style="margin-bottom: 20px;">Create your first campaign to get started!</p>
+                    <button onclick="document.getElementById('new-campaign-btn').click()" class="btn btn-primary">
+                        Create Campaign
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 SocialSafeZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="static/main.js"></script>
+    <script src="static/campaigns.js"></script>
+</body>
+</html>

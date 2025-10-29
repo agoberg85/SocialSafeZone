@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile - SocialSafeZone</title>
+    
+    <!-- Fonts and Styles go here -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display.swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+
+    <!-- THE FIX, PART 1: Load the Supabase library in the head -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>  
+    
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="index.html" class="logo">SocialSafeZone</a>
+            <div class="nav-panel">
+                <div></div>
+                <ul class="nav-links">
+                    <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
+                    <li><a href="campaigns.html" class="nav-link">Build Campaign</a></li>
+                    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div id="user-session-cta">
+                    <!-- Default state (user is logged out) -->
+                    <a href="login.html" id="login-button-nav" class="btn btn-primary nav-cta">Login / Sign Up</a>
+    
+                    <!-- Logged-in state (hidden by default) -->
+                    <div id="user-menu" class="hidden">
+                        <a href="profile.html" id="welcome-link" class="nav-link">Welcome!</a>
+                        <button id="logout-button" class="btn btn-danger">Logout</button>
+                    </div>
+    
+                </div>
+            </div>
+            <button class="hamburger">
+                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">menu</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container topgap">
+        <!-- Back Button -->
+        <div style="margin-bottom: 20px;">
+            <a href="campaigns.html" style="color: #666; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                ← Back to Campaigns
+            </a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" style="text-align: center; padding: 60px 20px;">
+            <p style="color: #666;">Loading campaign...</p>
+        </div>
+
+        <!-- Campaign Header -->
+        <div class="campaign-container">
+            <div id="campaign-header" class="hidden campaign-header-section">
+                <div class="campaign-header">
+                    <div>
+                        <h1 id="campaign-name" style="margin: 0 0 10px 0; color: #333;">Campaign Name</h1>
+                        <p id="campaign-client" style="margin: 0; color: #666; font-size: 16px;"></p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="generate-spec-btn" class="btn btn-primary" title="Download PDF specification sheet">
+                            <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">picture_as_pdf</span> Download PDF
+                        </button>
+                        <button id="share-campaign-btn" class="btn btn-primary">
+                            <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">share</span> Create Link
+                        </button>
+                        <button onclick="openCampaignModal()" class="btn">
+                            <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">edit</span>
+                        </button>
+                    </div>
+                </div>
+                <p id="campaign-description"></p>
+                <div id="campaign-summary" class="campaign-summary">
+                    <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #333; font-weight: 600;">📊 Campaign Overview</h4>
+                    <div class="campaign-summary-grid">
+                        <div>
+                            <p style="margin: 0; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Total Budget</p>
+                            <p id="summary-budget" style="margin: 5px 0 0 0; font-size: 18px; font-weight: 600; color: #2e7d32;">-</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Campaign Period</p>
+                            <p id="summary-period" style="margin: 5px 0 0 0; font-size: 14px; font-weight: 500; color: #333;">-</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Total Impressions</p>
+                            <p id="summary-impressions" style="margin: 5px 0 0 0; font-size: 18px; font-weight: 600; color: #1565c0;">-</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Total Reach</p>
+                            <p id="summary-reach" style="margin: 5px 0 0 0; font-size: 18px; font-weight: 600; color: #6a1b9a;">-</p>
+                        </div>
+                    </div>
+                </div>            
+            </div>
+
+            <!-- Main Content Grid -->
+            <div id="campaign-content" class="hidden campaign-content-grid">
+                
+                <!-- Left Column: Add Formats -->
+                <div>
+                    <div class="campaign-content">
+                        <h3 style="margin: 0 0 20px 0; color: #333;">Add Platforms & Formats</h3>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                Platform
+                            </label>
+                            <select id="platform-select">
+                                <option value="">Select platform...</option>
+                                <option value="__CUSTOM__">📐 Custom Format</option>
+                                <option value="__OOH__">🏙️ Out-of-Home (Billboard, Transit, etc.)</option>
+                                <option value="__DISPLAY__">🖥️ Display/Programmatic Ads</option>
+                                <option value="__PRINT__">📰 Print (Magazine, Newspaper, etc.)</option>
+                                <option disabled>──────────────────</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Standard Format Dropdown (shown for standard platforms) -->
+                        <div id="format-select-container" style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                Format
+                            </label>
+                            <select id="format-select" disabled>
+                                <option value="">Select format...</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Custom Format Inputs (shown when Custom is selected) -->
+                        <div id="custom-format-container" style="display: none;">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                    Format Name *
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="custom-format-name"
+                                    placeholder="e.g., Outdoor Billboard, Email Header"
+                                >
+                            </div>
+                        
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                    Dimensions *
+                                </label>
+                                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center;">
+                                    <input 
+                                        type="number" 
+                                        id="custom-width"
+                                        placeholder="Width"
+                                        min="1"
+                                    >
+                                    <span style="color: #666; font-size: 18px;">×</span>
+                                    <input 
+                                        type="number" 
+                                        id="custom-height"
+                                        placeholder="Height"
+                                        min="1"
+                                    >
+                                </div>
+                                <p style="margin: 5px 0 0 0; font-size: 12px; color: #999;">Enter dimensions in pixels</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                Creative Name *
+                            </label>
+                            <input 
+                                type="text" 
+                                id="creative-name-input"
+                                placeholder="e.g., Summer Sale Ad"
+                                disabled
+                            >
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                Creative Description
+                            </label>
+                            <textarea 
+                                id="creative-description-input"
+                                placeholder="e.g., Tactical ad with prize bubble overlay..."
+                                rows="3"
+                                disabled
+                            ></textarea>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                Creative Type
+                            </label>
+                            <select id="creative-type-select" disabled>
+                                <option value="image">📷 Image</option>
+                                <option value="video">🎬 Video</option>
+                                <option value="other">📄 Other</option>
+                            </select>
+                        </div>
+
+                        <div id="duration-field" style="display: none; margin-bottom: 20px;">
+                            <label>Duration</label>
+                            <input 
+                                type="text" 
+                                id="creative-duration" 
+                                placeholder="e.g., 30s, 6-10s, 15s">
+                            <small style="color: #666; font-size: 12px;">Video Duration</small>
+                        </div>
+
+
+                        <button id="add-format-btn" class="btn btn-primary" style="width: 100%;" disabled>
+                            + Add Creative to Campaign
+                        </button>
+
+
+                    </div>
+                </div>
+
+                <!-- Right Column: Selected Formats -->
+                <div>
+                    <div class="campaign-content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin: 0; color: #333;">Selected Formats (<span id="format-count">0</span>)</h3>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="formats-empty" style="text-align: center; padding: 60px 20px; color: #999;">
+                            <p style="margin: 0; font-size: 16px;">No formats added yet</p>
+                            <p style="margin: 8px 0 0 0; font-size: 14px;">Select a platform and format to get started →</p>
+                        </div>
+
+                        <!-- Formats Grid -->
+                        <div id="formats-grid" class="hidden formats-grid">
+                            <!-- Format cards will be inserted here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<!-- Edit Creative Modal with Tabs -->
+<div id="edit-creative-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
+    <div style="max-width: 700px; margin: 50px auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+        
+        <!-- Modal Header -->
+        <div style="padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; font-size: 20px;" id="modal-creative-title">Creative Details</h3>
+            <button onclick="closeCreativeModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div style="display: flex; border-bottom: 1px solid #e5e7eb; background: #f9fafb;">
+            <button 
+                id="tab-edit" 
+                class="modal-tab" 
+                onclick="switchTab('edit')"
+                style="flex: 1; padding: 12px 20px; border: none; background: transparent; cursor: pointer; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s;"
+            >
+                ✏️ Edit
+            </button>            
+            <button 
+                id="tab-planning" 
+                class="modal-tab active" 
+                onclick="switchTab('planning')"
+                style="flex: 1; padding: 12px 20px; border: none; background: transparent; cursor: pointer; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s;"
+            >
+                📊 Media Planning
+            </button>
+            <button 
+                id="tab-specs" 
+                class="modal-tab" 
+                onclick="switchTab('specs')"
+                style="flex: 1; padding: 12px 20px; border: none; background: transparent; cursor: pointer; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s;"
+            >
+                📄 File Specs
+            </button>
+            <button 
+                id="tab-safezone" 
+                class="modal-tab" 
+                onclick="switchTab('safezone')"
+                style="flex: 1; padding: 12px 20px; border: none; background: transparent; cursor: pointer; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s;"
+            >
+                🎯 Safe Zone Test
+            </button>
+        </div>
+
+        <!-- Tab Content Container -->
+        <div style="padding: 30px;">
+            
+            <!-- Tab 0: Edit Creative (NEW) -->
+            <div id="content-edit" class="tab-content">
+                <form id="edit-basic-form" onsubmit="return false;">
+                    
+                    <!-- Platform & Format (Read-only) -->
+                    <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 10px 0; color: #333; font-size: 14px;">Format</h4>
+                        <p id="edit-format-display" style="margin: 0; color: #666; font-size: 14px;">
+                            <!-- Will be populated with platform - format -->
+                        </p>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; color: #999;">
+                            To change the format, delete this creative and add a new one
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Creative Name *</label>
+                        <input type="text" id="edit-creative-name" required>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Creative Description</label>
+                        <textarea id="edit-creative-description" rows="3"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Creative Type</label>
+                        <select id="edit-creative-type">
+                            <option value="image">📷 Image</option>
+                            <option value="video">🎬 Video</option>
+                            <option value="other">📄 Other</option>
+                        </select>
+                    </div>
+
+                    <div id="edit-duration-field" style="margin-bottom: 20px; display: none;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Duration</label>
+                        <input type="text" id="edit-creative-duration" placeholder="e.g., 30s, 6-10s, 15s">
+                        <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">Video length specification</small>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                        <button type="button" onclick="closeCreativeModal()" class="btn" style="background: #f5f5f5; color: #666;">Cancel</button>
+                        <button type="button" onclick="saveBasicEdits()" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 1: Media Planning -->
+            <div id="content-planning" class="tab-content" style="display: none;">
+                <form id="edit-creative-form" onsubmit="return false;">
+                    
+                    <!-- Remove these three fields: -->
+                    <!-- ❌ Creative Name -->
+                    <!-- ❌ Description -->
+                    <!-- ❌ Type -->
+            
+                    <!-- Media Planning Section (keep only this) -->
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 15px 0; font-size: 16px; color: #333;">Media Planning</h4>
+            
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Placement</label>
+                            <input type="text" id="modal-placement" placeholder="e.g., dn.no, e24.no, aftenposten.no">
+                            <small style="color: #666;">Where will this creative run?</small>
+                        </div>
+            
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Start Date</label>
+                                <input type="date" id="modal-start-date">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">End Date</label>
+                                <input type="date" id="modal-end-date">
+                            </div>
+                        </div>
+            
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Budget</label>
+                            <input type="number" id="modal-budget" step="0.01" placeholder="0.00">
+                        </div>
+            
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Impressions</label>
+                                <input type="number" id="modal-impressions" placeholder="0">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Reach</label>
+                                <input type="number" id="modal-reach" placeholder="0">
+                            </div>
+                        </div>
+            
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">CPM</label>
+                                <input type="number" id="modal-cpm" step="0.01" placeholder="0.00">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Frequency</label>
+                                <input type="number" id="modal-frequency" step="0.1" placeholder="0.0">
+                            </div>
+                        </div>
+            
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Notes</label>
+                            <textarea id="modal-notes" rows="3" placeholder="Internal notes..."></textarea>
+                        </div>
+                    </div>
+            
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                        <button type="button" onclick="closeCreativeModal()" class="btn" style="background: #f5f5f5; color: #666;">Cancel</button>
+                        <button type="submit" id="save-creative-btn" class="btn btn-primary">Save Planning Data</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tab 2: File Specifications -->
+            <div id="content-specs" class="tab-content" style="display: none;">
+                <div id="file-specs-container">
+                    <p style="color: #999; text-align: center; padding: 20px;">Loading file specifications...</p>
+                </div>
+            </div>
+
+            <!-- Tab 3: Safe Zone Test -->
+            <div id="content-safezone" class="tab-content" style="display: none;">
+    
+                <!-- Upload Area -->
+                <div style="margin-bottom: 20px;">
+                    <div style="text-align: center;">
+                        <p id="safezone-format-info" style="margin: 0 0 15px 0; font-size: 14px; color: #666;">
+                            <!-- Will show: "Instagram Story (1080×1920px)" -->
+                        </p>
+                        
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+
+
+                            <div class="upload-wrapper">
+                                <label for="safezone-image-upload" class="btn btn-primary">
+                                    <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">image</span>
+                                    Upload Image</label>
+                                    <input 
+                                        type="file" 
+                                        id="safezone-image-upload" 
+                                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                                        aria-label="Upload image file"
+                                    >
+                            </div>
+
+
+                            <div class="upload-wrapper">
+                    
+                                <label for="safezone-video-upload" class="btn btn-primary">
+                                    <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">video_file</span>
+                                    Upload Video</label>
+                                    <input 
+                                        type="file" 
+                                        id="safezone-video-upload" 
+                                        accept="video/mp4,video/webm"
+                                        aria-label="Upload video file"
+                                    >
+                            </div>
+
+                        </div>
+                        
+                        <p style="margin: 10px 0 0 0; font-size: 12px; color: #999;">
+                            Max 10MB for images, 100MB for videos
+                        </p>
+                    </div>
+                </div>
+            
+                <!-- Preview Container (Video + Canvas Overlay) -->
+                <div style="margin-bottom: 20px; text-align: center;">
+                    <div id="safezone-preview-wrapper" style="position: relative; display: inline-block; background: #000; border-radius: 8px; overflow: hidden; max-width: 60%;">
+                        <!-- Video element (plays behind canvas) -->
+                        <video id="safezone-test-video" playsinline muted loop style="display: none; width: 100%; height: auto; vertical-align: middle;"></video>
+                        
+                        <!-- Canvas (sits on top for mask overlay) -->
+                        <canvas id="safezone-test-canvas" style="display: block; width: 100%; height: auto; position: relative;"></canvas>
+                    </div>
+                </div>
+            
+                <!-- Mask Controls -->
+                <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <h4 style="margin: 0 0 15px 0; font-size: 14px;">Safe Zone Overlay</h4>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-size: 13px; color: #666;">Mask Color</label>
+                            <input type="text" id="safezone-mask-color" data-coloris value="#FF0000">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 5px; font-size: 13px; color: #666;">Opacity</label>
+                            <input type="range" id="safezone-mask-opacity" min="0" max="1" step="0.1" value="0.4" style="width: 100%;">
+                            <span id="safezone-opacity-value" style="font-size: 12px; color: #666;">40%</span>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Info Notice -->
+                <div style="background: #fef3c7; padding: 15px; border-radius: 8px;">
+                    <p style="margin: 0; font-size: 13px; color: #92400e;">
+                        Files are only stored temporarily in your browser for testing. They are not saved to our servers.
+                    </p>
+                </div>
+            
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                    <button type="button" id="safezone-clear-btn" class="btn" style="background: #ef4444; color: white;">Clear Upload</button>
+                    <button type="button" onclick="closeCreativeModal()" class="btn" style="background: #f5f5f5; color: #666;">Close</button>
+                </div>
+            
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Share Settings Modal -->
+<div id="share-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%;">
+        <h2 style="margin: 0 0 20px 0;">Share Creative Brief</h2>
+        
+        <div style="margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <input type="checkbox" id="share-enabled-checkbox" style="width: auto;">
+                <label for="share-enabled-checkbox" style="margin: 0; font-weight: 600;">Enable public link</label>
+            </div>
+            
+            <div id="share-link-container" style="display: none;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Shareable Link</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="share-link-url" readonly>
+                    <button id="copy-share-link" class="btn btn-primary">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="share-options" style="display: none;">
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Password (Optional)</label>
+                <input type="text" id="share-password" placeholder="Leave blank for no password">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Expires After (Optional)</label>
+                <select id="share-expiry">
+                    <option value="">Never expires</option>
+                    <option value="7">7 days</option>
+                    <option value="30">30 days</option>
+                    <option value="90">90 days</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+            <button onclick="closeShareModal()" class="btn" style="background: #f5f5f5; color: #666;">Cancel</button>
+            <button id="save-share-settings" class="btn btn-primary">Save Settings</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.modal-tab.active {
+    background: white !important;
+    color: #667eea !important;
+    border-bottom-color: #667eea !important;
+}
+
+.modal-tab:not([disabled]):hover {
+    background: #f3f4f6;
+}
+</style>
+
+
+<!-- Edit Campaign Modal -->
+<div id="edit-campaign-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto;">
+    <div style="max-width: 500px; margin: 50px auto; background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0; font-size: 20px;">Edit Campaign Details</h3>
+            <button onclick="closeCampaignModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+        </div>
+
+        <form id="edit-campaign-form" onsubmit="return false;">
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Campaign Name *</label>
+                <input type="text" id="modal-campaign-name" required>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Client Name</label>
+                <input type="text" id="modal-client-name">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Description</label>
+                <textarea id="modal-campaign-description" rows="4"></textarea>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Status</label>
+                <select id="modal-campaign-status">
+                    <option value="active">🟢 Active</option>
+                    <option value="draft">📝 Draft</option>
+                    <option value="paused">⏸️ Paused</option>
+                    <option value="completed">✅ Completed</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">Notes</label>
+                <textarea id="modal-campaign-notes" rows="3" placeholder="Internal notes..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                <button type="button" onclick="closeCampaignModal()" class="btn" style="background: #f5f5f5; color: #666;">
+                    Cancel
+                </button>
+                <button type="submit" id="save-campaign-btn" class="btn btn-primary">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<footer class="main-footer">
+    <div class="container">
+        <p>&copy; 2025 SocialSafeZone. All rights reserved.</p>
+    </div>
+</footer>
+
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Scripts -->
+    <script src="static/main.js"></script>
+    <script src="static/campaign-pdf.js"></script>
+    <script src="static/campaign-safezone-test.js"></script>
+    <script src="static/campaign-detail.js"></script>
+
+</body>
+</html>

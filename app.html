@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialSafeZone Tool</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>    
+
+    <!-- Your Stylesheet (path is relative to the static folder) -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+  
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="index.html" class="logo">SocialSafeZone</a>
+            <div class="nav-panel">
+                <div></div>
+                <ul class="nav-links">
+                    <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
+                    <li><a href="campaigns.html" class="nav-link">Build Campaign</a></li>
+                    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div id="user-session-cta">
+                    <!-- Default state (user is logged out) -->
+                    <a href="login.html" id="login-button-nav" class="btn btn-primary nav-cta">Login / Sign Up</a>
+    
+                    <!-- Logged-in state (hidden by default) -->
+                    <div id="user-menu" class="hidden">
+                        <a href="profile.html" id="welcome-link" class="nav-link">Welcome!</a>
+                        <button id="logout-button" class="btn btn-danger">Logout</button>
+                    </div>
+    
+                </div>
+            </div>
+            <button class="hamburger">
+                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">menu</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- MAIN CLASS ADDED: Wraps the entire tool for correct styling -->
+    <main class="container topgap">
+        <div class="content-wrapper">
+            <div class="canvas-wrapper">
+                <video id="video-preview" playsinline muted loop></video>
+                <canvas id="safezone-canvas"></canvas>
+            </div>
+
+            <div class="sidebar">
+                <div class="controls">
+                    <div class="platform-nav"></div>
+                    <div class="format-selector">
+                        <label for="format-select">Select Ad Format:</label>
+                        <select id="format-select"></select>
+                    </div>
+                </div>
+    
+                <div class="info-box">
+                    <p id="format-description"></p>
+                    <p id="format-dimensions"></p>
+                    <a href="#" id="format-link" target="_blank" rel="noopener noreferrer">View Documentation</a>
+                </div>
+
+                <div class="mask-controls">
+                    <h4>Customize Mask</h4>
+                    <div class="control-group">
+                        <label for="mask-color-input">Color</label>
+                        <input type="text" id="mask-color-input" data-coloris value="#FF0000">
+                    </div>
+                    <div class="control-group">
+                        <label for="mask-opacity-input">Opacity</label>
+                        <input type="range" id="mask-opacity-input" min="0" max="1" step="0.1" value="0.4">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <!-- BUTTON CLASSES STANDARDIZED -->
+            <div>
+                <button id="download-btn" class="btn btn-primary">
+                    <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">download</span>
+                    Download Mask
+                </button>
+                <div id="download-counter" style="text-align: center; margin: 10px 0; font-size: 14px; color: #666;">
+                    <span id="download-counter-text"></span>
+                </div>    
+            </div>        
+            <div class="upload-actions">
+                <div class="app-btn">
+                    <div class="upload-wrapper">
+                        <label for="image-upload-input" class="btn btn-primary">
+                            <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">image</span>
+                            Upload Image</label>
+                            <input 
+                                type="file" 
+                                id="image-upload-input" 
+                                accept="image/jpeg,image/jpg,image/png,image/webp"
+                                aria-label="Upload image file"
+                            >
+                    </div>
+                    <div id="upload-counter" style="text-align: center; margin: 10px 0; font-size: 14px; color: #666;">
+                        <span id="upload-counter-text"></span>
+                    </div>
+                </div>
+
+                <div class="upload-wrapper app-btn">
+                    
+                    <label for="video-upload-input" class="btn btn-primary">
+                        <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">video_file</span>
+                        Upload Video</label>
+                        <input 
+                            type="file" 
+                            id="video-upload-input" 
+                            accept="video/mp4,video/webm"
+                            aria-label="Upload video file"
+                        >
+                    <span class="pro-badge">PRO</span>
+                </div>
+                <button id="clear-btn" class="btn btn-danger">
+                    <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">delete</span>
+                    Clear Media
+                </button>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- FOOTER ADDED: Same as landing page -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 SocialSafeZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Script path is relative to the static folder -->
+    <script src="static/main.js"></script>
+    <script src="static/app.js"></script>
+     
+</body>
+</html>

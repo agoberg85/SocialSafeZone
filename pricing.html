@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - SocialSafeZone</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Your Stylesheet (points to the static folder) -->
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <nav>
+            <a href="index.html" class="logo">SocialSafeZone</a>
+            <div class="nav-panel">
+                <div></div>
+                <ul class="nav-links">
+                    <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
+                    <li><a href="campaigns.html" class="nav-link">Build Campaign</a></li>
+                    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div id="user-session-cta">
+                    <!-- Default state (user is logged out) -->
+                    <a href="login.html" id="login-button-nav" class="btn btn-primary nav-cta">Login / Sign Up</a>
+    
+                    <!-- Logged-in state (hidden by default) -->
+                    <div id="user-menu" class="hidden">
+                        <a href="profile.html" id="welcome-link" class="nav-link">Welcome!</a>
+                        <button id="logout-button" class="btn btn-danger">Logout</button>
+                    </div>
+    
+                </div>
+            </div>
+            <button class="hamburger">
+                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">menu</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container topgap">
+        <section>
+            <div class="text-center">
+                <h1>Simple, Transparent Pricing</h1>
+                <p class="subtitle">Choose the plan that's right for you. Start for free and upgrade when you're ready for more powerful features.</p>
+            </div>
+        </section>
+
+        <section class="pricing-table">
+                <div class="pricing-grid">
+                    <!-- Free Plan Card -->
+                    <div class="price-card">
+                        <h3>Free</h3>
+                        <p class="price-description">For casual users and quick checks.</p>
+                        <div class="price">
+                            $0<span class="price-period">/ month</span>
+                        </div>
+                        <a href="app.html" class="btn btn-primary" style="background-color: var(--text-color-light); border-color: var(--text-color-light);">Use the Free Tool</a>
+                        <ul class="features-list">
+                            <li><span class="material-icons">check_circle</span> All Major Platforms</li>
+                            <li><span class="material-icons">check_circle</span> Image Upload & Preview</li>
+                            <li><span class="material-icons">check_circle</span> Mask Color Customization</li>
+                            <li><span class="material-icons">check_circle</span> Limited Mask Downloads*</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pro Plan Card -->
+                    <div class="price-card">
+                        <h3>Pro</h3>
+                        <p class="price-description">For professionals and teams.</p>
+                        <div class="price">
+                            $5<span class="price-period">/ month</span>
+                        </div>
+                        <!-- This button will eventually link to your Stripe checkout -->
+                        <a href="https://buy.stripe.com/test_aFabJ087BeDh44e7UGdnW00" id="go-pro-link" class="btn btn-primary btn-lg">Get Pro</a>
+                        <ul class="features-list">
+                            <li><span class="material-icons">check_circle</span> All Free Features, plus:</li>
+                            <li><span class="material-icons">check_circle</span> Video Upload & Preview</li>
+                            <li><span class="material-icons">check_circle</span> Multi-Platform Preview</li>
+                            <li><span class="material-icons">check_circle</span> Save Your Projects</li>
+                            <li><span class="material-icons">check_circle</span> Priority Support</li>
+                        </ul>
+                    </div>
+                    <!-- Pro Plan Card -->
+                    <div class="price-card">
+                        <h3>Studio</h3>
+                        <p class="price-description">For teams and agencies.</p>
+                        <div class="price">
+                            $39<span class="price-period">/ month</span>
+                        </div>
+                        <!-- This button will eventually link to your Stripe checkout -->
+                        <a href="https://buy.stripe.com/test_cNi00i87B8eTfMWb6SdnW02" id="go-studio-link" class="btn btn-primary btn-lg">Get Studio</a>
+                        <ul class="features-list">
+                            <li><span class="material-icons">check_circle</span> All Pro Features, plus:</li>
+                            <li><span class="material-icons">check_circle</span> Campaign Builder</li>
+                        </ul>
+                    </div>                    
+                </div>
+
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 SocialSafeZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="static/main.js"></script>
+    
+</body>
+</html>

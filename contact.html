@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - SocialSafeZone</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <nav>
+            <a href="index.html" class="logo">SocialSafeZone</a>
+            <div class="nav-panel">
+                <div></div>
+                <ul class="nav-links">
+                    <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
+                    <li><a href="campaigns.html" class="nav-link">Build Campaign</a></li>
+                    <li><a href="pricing.html" class="nav-link">Pricing</a></li>
+                    <li><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div id="user-session-cta">
+                    <!-- Default state (user is logged out) -->
+                    <a href="login.html" id="login-button-nav" class="btn btn-primary nav-cta">Login / Sign Up</a>
+    
+                    <!-- Logged-in state (hidden by default) -->
+                    <div id="user-menu" class="hidden">
+                        <a href="profile.html" id="welcome-link" class="nav-link">Welcome!</a>
+                        <button id="logout-button" class="btn btn-danger">Logout</button>
+                    </div>
+    
+                </div>
+            </div>
+            <button class="hamburger">
+                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">menu</span>
+            </button>
+        </nav>
+    </header>
+
+    <main class="container topgap">
+        <section>
+            <div class="container text-center">
+                <h1>Get In Touch</h1>
+                <p class="subtitle">Have a question, a feature request, or a partnership inquiry? We'd love to hear from you.</p>
+            </div>
+        </section>
+
+        <section>
+                <div class="contact-card">
+                    <h3>Contact Information</h3>
+                    <p>
+                        <strong>General Inquiries & Support:</strong><br>
+                        <a href="mailto:support@SocialSafeZone.com">support@SocialSafeZone.com</a>
+                    </p>
+                    <p>
+                        <strong>Partnerships & Media:</strong><br>
+                        <a href="mailto:partners@SocialSafeZone.com">partners@SocialSafeZone.com</a>
+                    </p>
+                </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 SocialSafeZone. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="static/main.js" defer></script>
+    <script>
+        fetch('/_nav.html').then(res => res.text()).then(html => {
+          document.getElementById('nav-placeholder').innerHTML = html;
+        });
+        fetch('/footer.html').then(res => res.text()).then(html => {
+          document.getElementById('footer-placeholder').innerHTML = html;
+        });
+    </script>      
+</body>
+</html>

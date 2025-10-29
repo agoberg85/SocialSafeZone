@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Formats CMS - SafeZoneGuide</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .formats-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .formats-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .formats-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .formats-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.875rem;
+        }
+
+        .formats-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.875rem;
+            margin-right: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .tag-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            min-height: 42px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tag-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            min-width: 100px;
+            font-size: 0.875rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 20px 0 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .json-editor {
+            font-family: 'Courier New', monospace;
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">SafeZoneGuide</a>
+            <div class="nav-links">
+                <a href="app.html">Safe Zone Tool</a>
+                <a href="campaigns.html">Campaigns</a>
+                <a href="pricing.html">Pricing</a>
+                <a href="profile.html">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <div>
+                <h1>Platform Formats CMS</h1>
+                <p style="color: #6b7280; margin-top: 5px;">Manage social media platform specifications</p>
+            </div>
+            <button id="new-format-btn" class="btn btn-primary">
+                + New Format
+            </button>
+        </div>
+
+        <div id="loading-state" style="text-align: center; padding: 40px;">
+            <p>Loading formats...</p>
+        </div>
+
+        <div id="formats-container" class="formats-table" style="display: none;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Platform</th>
+                        <th>Format Name</th>
+                        <th>Dimensions</th>
+                        <th>File Formats</th>
+                        <th>Max Size</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="formats-tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- Format Editor Modal -->
+<div id="format-modal" class="modal">
+    <div class="modal-content">
+        <h2 id="modal-title">New Format</h2>
+        <form id="format-form">
+            <div class="section-title">Basic Information</div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="platform">Platform *</label>
+                    <input type="text" id="platform" required placeholder="e.g., Instagram, Facebook">
+                    <div class="form-hint">Platform name as it appears in the app</div>
+                </div>
+                <div class="form-group">
+                    <label for="format-name">Format Name *</label>
+                    <input type="text" id="format-name" required placeholder="e.g., Feed Post, Story">
+                    <div class="form-hint">Specific format type for this platform</div>
+                </div>
+                <div class="form-group">
+                    <label for="width">Width (px) *</label>
+                    <input type="number" id="width" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="height">Height (px) *</label>
+                    <input type="number" id="height" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="aspect-ratio">Aspect Ratio</label>
+                    <input type="text" id="aspect-ratio" placeholder="e.g., 1:1, 9:16, 16:9">
+                    <div class="form-hint">Used for both image and video</div>
+                </div>
+                <div class="form-group">
+                    <label for="sort-order">Sort Order</label>
+                    <input type="number" id="sort-order" value="0">
+                    <div class="form-hint">Lower numbers appear first</div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Brief description of this format"></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="reference-link">Reference Link</label>
+                    <input type="url" id="reference-link" placeholder="https://...">
+                    <div class="form-hint">Official platform documentation URL</div>
+                </div>
+            </div>
+
+            <div class="section-title">Image Specifications</div>
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="file-formats">Image File Types</label>
+                    <div id="file-formats-container" class="tag-input-container">
+                        <input type="text" id="file-formats" class="tag-input" placeholder="Type and press Enter (e.g., JPG, PNG, GIF)">
+                    </div>
+                    <div class="form-hint">Accepted image formats - Press Enter after each</div>
+                </div>
+                <div class="form-group">
+                    <label for="max-file-size">Max Image File Size</label>
+                    <input type="text" id="max-file-size" placeholder="e.g., 30MB, 8MB">
+                    <div class="form-hint">Maximum file size for images</div>
+                </div>
+            </div>
+
+            <div class="section-title">Video Specifications</div>
+            <div class="form-grid">
+                <!-- ADD THIS NEW FIELD -->
+                <div class="form-group full-width">
+                    <label for="video-file-formats">Video File Types</label>
+                    <div id="video-file-formats-container" class="tag-input-container">
+                        <input type="text" id="video-file-formats" class="tag-input" placeholder="Type and press Enter (e.g., MP4, MOV, WebM)">
+                    </div>
+                    <div class="form-hint">Accepted video formats - Press Enter after each</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration-limit">Duration Limit</label>
+                    <input type="text" id="duration-limit" placeholder="e.g., 60s, 15s, 3min">
+                </div>
+                <div class="form-group">
+                    <label for="frame-rate">Frame Rate</label>
+                    <input type="text" id="frame-rate" placeholder="e.g., 24fps, 30fps, 60fps">
+                </div>
+                <div class="form-group">
+                    <label for="codec">Video Codec</label>
+                    <input type="text" id="codec" placeholder="e.g., H.264, H.265, VP9">
+                </div>
+                <div class="form-group">
+                    <label for="audio-format">Audio Format</label>
+                    <input type="text" id="audio-format" placeholder="e.g., AAC, MP3, Opus">
+                </div>
+            </div>
+            
+
+            <div class="section-title">Safe Zones & Overlays</div>
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="safe-zone">Safe Zone (JSON)</label>
+                    <textarea id="safe-zone" class="json-editor" placeholder='{"top": 0, "right": 0, "bottom": 0, "left": 0}'></textarea>
+                    <div class="form-hint">Margins in pixels where content is safe</div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="danger-zones">Danger Zones (JSON Array)</label>
+                    <textarea id="danger-zones" class="json-editor" placeholder='[{"x": 0, "y": 0, "width": 100, "height": 100}]'></textarea>
+                    <div class="form-hint">Array of rectangles where content may be obscured</div>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="special-requirements">Special Requirements</label>
+                <textarea id="special-requirements" placeholder="Any additional notes or requirements"></textarea>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="active" checked>
+                    <label for="active" style="margin-bottom: 0;">Active (visible in app)</label>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                <button type="button" id="cancel-btn" class="btn" style="background: #f3f4f6; color: #374151;">Cancel</button>
+                <button type="submit" id="save-btn" class="btn btn-primary">Save Format</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/main.js"></script>
+    <script src="static/admin-formats.js"></script>
+</body>
+</html>
