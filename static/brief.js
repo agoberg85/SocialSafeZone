@@ -1,21 +1,9 @@
 // static/brief.js
 // Public Creative Brief Page
 
-
-
 let campaign = null;
 let creatives = [];
 let formats = {};
-
-// Initialize Supabase client for brief.html
-if (!window.app) {
-    window.app = {
-        supabaseClient: window.supabase.createClient(
-            'https://yoatrgbojsfpegorzbma.supabase.co', // Your Supabase URL
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvYXRyZ2JvanNmcGVnb3J6Ym1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5OTMzOTcsImV4cCI6MjA3NjU2OTM5N30.RA0hse-MXlq-q0MXTvwqRXc_naFgm5rtpJ16v4N9r3k' // Your anon key
-        )
-    };
-}
 
 const supabaseClient = window.app.supabaseClient;
 
