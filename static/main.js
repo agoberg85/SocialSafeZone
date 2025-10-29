@@ -116,4 +116,72 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Password Reset Logic ---
+    function showMessage(elementId, message, type) {
+        const messageBox = document.getElementById(elementId);
+        if (messageBox) {
+            messageBox.textContent = message;
+            messageBox.className = `message-box ${type}`;
+            messageBox.style.display = 'block';
+        }
+    }
+
+    // Forgot Password Form Handler
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('forgot-email').value;
+            const messageBoxId = 'forgot-password-message';
+
+            const { error } = await window.app.supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: 'https://social-safe-zone.vercel.app/reset-password.html',
+            });
+
+            if (error) {
+                showMessage(messageBoxId, error.message, 'error');
+            } else {
+                showMessage(messageBoxId, 'Password reset email sent. Check your inbox!', 'success');
+                forgotPasswordForm.reset();
+            }
+        });
+    }
+
+    // Reset Password Form Handler
+    const resetPasswordForm = document.getElementById('reset-password-form');
+    if (resetPasswordForm) {
+        resetPasswordForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const messageBoxId = 'reset-password-message';
+
+            if (newPassword !== confirmPassword) {
+                showMessage(messageBoxId, 'Passwords do not match.', 'error');
+                return;
+            }
+
+            if (newPassword.length < 6) { // Basic password strength check
+                showMessage(messageBoxId, 'Password must be at least 6 characters long.', 'error');
+                return;
+            }
+
+            // Supabase automatically picks up the token from the URL
+            const { error } = await window.app.supabaseClient.auth.updateUser({
+                password: newPassword,
+            });
+
+            if (error) {
+                showMessage(messageBoxId, error.message, 'error');
+            } else {
+                showMessage(messageBoxId, 'Your password has been reset successfully!', 'success');
+                resetPasswordForm.reset();
+                // Redirect to login page after a short delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }
+        });
+    }
 });

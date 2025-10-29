@@ -15,13 +15,13 @@ Design System for SafeZoneGuide
     
     --background-color: #f3f3f3;
     --surface-color: #ffffff;
-    --surface-color-dark: #f6f6f6;
-    --border-color: #212529;
+    --surface-color-dark: #f7f7f7;
+    --border-color: #3b3c3d;
     --border-color-light: #bebebe;
     --border-color-lighter: #d3d3d3;
 
     /* Typography */
-    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-family: "Space Grotesk", sans-serif;
 
     /* Spacing & Sizing */
     --border-radius-big: 12px;
@@ -41,9 +41,9 @@ body {
     background-color: var(--background-color);
     color: var(--text-color-dark);
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.4;
 }
-h1, h2, h3, h4 { line-height: 1.2; margin-top: 0; font-weight: 600; }
+h1, h2, h3, h4 { line-height: 1.4; margin-top: 0; font-weight: 600; }
 p { margin-top: 0; }
 a { color: var(--primary-color); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -164,13 +164,14 @@ gap: 1rem;
 
 /* --- Landing Page Sections --- */
 .topgap {padding: 8rem 0 0 0;}
+.topgap-big {padding: 12rem 0 0 0;}
 .hero { padding: 10rem 0 0 0; }
 .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
 .hero .subtitle { font-size: 1.2rem; color: var(--text-color-light); max-width: 800px; margin: 0 auto 2rem auto; }
 .how-it-works { padding: 4rem 0 0 0; }
 .features { padding: 4rem 0; }
 .section-title { text-align: center; font-size: 2.25rem; margin-bottom: 3rem; }
-.steps-grid, .features-grid {
+.steps-grid, .features-grid, .why-grid {
     display: grid;
     grid-gap: 1px; /* Creates the space for the border */
     background-color: var(--border-color); /* This will be the border color */
@@ -183,6 +184,10 @@ gap: 1rem;
 
 .features-grid {
     grid-template-columns: repeat(3, 1fr);
+}
+
+.why-grid {
+    grid-template-columns: 1fr 2fr;
 }
 
 .step-card, .feature-card {
@@ -330,6 +335,10 @@ Styles for Campaign pages
     background: var(--surface-color);
     padding: 1rem;
     cursor: pointer;
+}
+
+.campaigns-card:hover {
+    background: var(--surface-color-dark);
 }
 
 .campaign-header-section {
@@ -823,7 +832,12 @@ Styles for Auth Page (`login.html`)
         display: block;
     }    
     #logout-button {margin-left: auto;}
-    .topgap {padding: 8rem 10px;}
+    .topgap {padding: 8rem 10px 0 10px;}
+    .topgap-big {padding: 8rem 10px 0 10px;}
+    .subtitle {padding: 1rem 0 2.6rem 0; width: 100%; margin: 0 auto;}
+    .features {
+        padding: 2rem 0;
+      }    
     .hero h1 { font-size: 2.25rem; }
     .app-main { padding: 1rem; }
     .actions { flex-direction: column; align-items: stretch; }
