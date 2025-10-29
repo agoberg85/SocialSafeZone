@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (session) {
                 goProLink.href = `${baseStripeUrl}?client_reference_id=${session.user.id}`;
             } else {
-                goProLink.textContent = 'Login to Go Pro';
+                goProLink.textContent = 'Login to get Pro';
                 goProLink.href = 'login.html';
             }
         }
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (session) {
                 goStudioLink.href = `${baseStripeUrl}?client_reference_id=${session.user.id}`;
             } else {
-                goStudioLink.textContent = 'Login to Get Studio';
+                goStudioLink.textContent = 'Login to get Studio';
                 goStudioLink.href = 'login.html';
             }
         }        
