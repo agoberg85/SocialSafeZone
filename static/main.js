@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.querySelector('.hamburger');
     if (hamburger) {
         const navPanel = document.querySelector('.nav-panel');
-        const menuIcon = hamburger.querySelector('.material-symbols-outlined');
+        const menuIcon = hamburger.querySelector('.burger-menu');
 
         hamburger.addEventListener('click', () => {
             if (navPanel && menuIcon) {

@@ -6,5 +6,6 @@
 
 # Generated config
 /static/config.js
+/static/_BACKUP-safezones.json
 
-GEMINI.md
+/GEMINI.md

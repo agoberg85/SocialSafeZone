@@ -163,7 +163,7 @@ gap: 1rem;
 }
 
 /* --- Landing Page Sections --- */
-.topgap {padding: 8rem 0;}
+.topgap {padding: 8rem 0 0 0;}
 .hero { padding: 10rem 0 0 0; }
 .hero h1 { font-size: 3rem; margin-bottom: 1rem; }
 .hero .subtitle { font-size: 1.2rem; color: var(--text-color-light); max-width: 800px; margin: 0 auto 2rem auto; }
@@ -782,6 +782,7 @@ Styles for Auth Page (`login.html`)
 }
 
 @media (max-width: 768px) {
+    .nomobile {display: none;}
     .nav-panel {
         display: none;
         position: absolute;
@@ -834,8 +835,7 @@ Styles for Auth Page (`login.html`)
     .campaign-header {
         flex-direction: column;
     }
-    .campaign-summary {
-    }
+    
     .campaign-summary-grid, .campaign-content-grid, .formats-grid {
         grid-template-columns: 1fr;
     }
