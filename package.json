@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "echo \"window.supabaseUrl = '$SUPABASE_URL'; window.supabaseKey = '$SUPABASE_ANON_KEY';\" > static/config.js"
+    "build": "mkdir public && cp -r *.html static admin public/ && echo \"window.supabaseUrl = '$SUPABASE_URL'; window.supabaseKey = '$SUPABASE_ANON_KEY';\" > public/static/config.js"
   },
   "devDependencies": {
     "supabase": "^2.53.6"
