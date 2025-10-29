@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (session) {
                 goProLink.href = `${baseStripeUrl}?client_reference_id=${session.user.id}`;
             } else {
-                goProLink.textContent = 'Login to Go Pro';
+                goProLink.textContent = 'Login to Get Pro';
                 goProLink.href = 'login.html';
             }
         }
