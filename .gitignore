@@ -3,3 +3,6 @@
 
 # Supabase
 /supabase/.temp
+
+# Generated config
+/static/config.js

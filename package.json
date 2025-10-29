@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "powershell.exe -NoProfile -Command \\"echo \\\\\\"window.supabaseUrl = \'\$env:SUPABASE_URL\'; window.supabaseKey = \'\$env:SUPABASE_ANON_KEY\';\\\\\\" > static/config.js\\""
+  },
   "devDependencies": {
     "supabase": "^2.53.6"
   },

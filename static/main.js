@@ -2,9 +2,8 @@
 
 window.app = {};
 
-const supabaseUrl = 'https://yoatrgbojsfpegorzbma.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvYXRyZ2JvanNmcGVnb3J6Ym1hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA5OTMzOTcsImV4cCI6MjA3NjU2OTM5N30.RA0hse-MXlq-q0MXTvwqRXc_naFgm5rtpJ16v4N9r3k';
-window.app.supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+// These will be populated by Vercel's build step or a local config file
+window.app.supabaseClient = supabase.createClient(window.supabaseUrl, window.supabaseKey);
 
 document.addEventListener('DOMContentLoaded', () => {
 
