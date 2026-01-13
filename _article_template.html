@@ -1,0 +1,70 @@
+<!-- _article_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO META TAGS - These will be replaced by the script -->
+    <title>{{TITLE}} - SocialSafeZone</title>
+    <meta name="description" content="{{EXCERPT}}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://social-safe-zone.vercel.app/blog/{{SLUG}}.html">
+    <meta property="og:title" content="{{TITLE}}">
+    <meta property="og:description" content="{{EXCERPT}}">
+    <meta property="og:image" content="{{IMAGE_URL}}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="{{TITLE}}">
+    <meta property="twitter:description" content="{{EXCERPT}}">
+    <meta property="twitter:image" content="{{IMAGE_URL}}">
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="../static/style.css"> <!-- Note the ../ to go up one level -->
+</head>
+<body>
+
+    <header class="main-header">
+        <nav>
+            <a href="../index.html" class="logo">SocialSafeZone</a>
+            <div class="nav-panel">
+                <ul class="nav-links">
+                    <li><a href="../app.html" class="nav-link">Safezone Tool</a></li>
+                    <li><a href="../pricing.html" class="nav-link">Pricing</a></li>
+                    <li><a href="../blog.html" class="nav-link">Blog</a></li>
+                    <li><a href="../contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div style="margin-left: auto;">
+                    <a href="../login.html" class="btn btn-primary nav-cta">Login / Sign Up</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container topgap">
+        <a href="../blog.html" class="back-link"><span class="material-icons">arrow_back</span> Back to Blog</a>
+        
+        <article class="article-content">
+            <h1>{{TITLE}}</h1>
+            <p class="article-meta">Posted on {{DATE}}</p>
+            
+            <div class="post-body">
+                {{CONTENT}}
+            </div>
+        </article>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 SocialSafeZone. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- We don't need Supabase JS here because the content is already baked in! -->
+</body>
+</html>

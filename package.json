@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "mkdir public && cp -r *.html static admin public/ && echo \"window.supabaseUrl = '$SUPABASE_URL'; window.supabaseKey = '$SUPABASE_ANON_KEY';\" > public/static/config.js"
+    "build": "mkdir -p public/blog && cp -r *.html static admin public/ && node scripts/generate-blog.js && echo \"window.supabaseUrl = '$SUPABASE_URL'; window.supabaseKey = '$SUPABASE_ANON_KEY';\" > public/static/config.js"
   },
   "devDependencies": {
     "supabase": "^2.53.6"

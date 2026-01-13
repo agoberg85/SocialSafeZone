@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p class="article-meta">Posted on ${date}</p>
                 <p class="article-excerpt">${escapeHtml(post.excerpt)}</p>
                 <!-- Link to the generic template with a query parameter -->
-                <a href="article.html?slug=${post.slug}" class="btn btn-primary">Read More</a>
+                <a href="blog/${post.slug}.html" class="btn btn-primary">Read More</a>
             </div>
         `;
         container.innerHTML += card;
