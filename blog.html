@@ -54,17 +54,10 @@
         </section>
 
         <section class="blog-list">
-                <div class="blog-grid">
-                    <!-- Placeholder Article 1 -->
-                    <div class="article-card">
-                        <h2>The Ultimate Guide to Instagram Story & Reel Safe Zones for 2025</h2>
-                        <p class="article-meta">Posted on October 23, 2025 by The SocialSafeZone Team</p>
-                        <p class="article-excerpt">Instagram's interface is constantly evolving. Are your call-to-actions being hidden by the latest UI update? In this guide, we break down the exact pixel dimensions you need to keep clear for both Stories and Reels to maximize your ad's impact...</p>
-                        <a href="blog-article-1.html" class="btn btn-primary">Read More</a>
-                    </div>
-
-                    <!-- Add more <div class="article-card"> blocks here for future articles -->
-                </div>
+            <!-- The container where posts will be injected -->
+            <div id="blog-grid-container" class="blog-grid">
+                <p>Loading articles...</p>
+            </div>
         </section>
     </main>
 
@@ -76,14 +69,60 @@
 
         <script src="static/config.js"></script>
     <script src="static/main.js"></script>
-    <script>
-        fetch('/_nav.html').then(res => res.text()).then(html => {
-          document.getElementById('nav-placeholder').innerHTML = html;
-        });
-        fetch('/footer.html').then(res => res.text()).then(html => {
-          document.getElementById('footer-placeholder').innerHTML = html;
-        });
-    </script>      
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const container = document.getElementById('blog-grid-container');
+    const supabase = window.app.supabaseClient;
+
+    // Fetch posts
+    const { data: posts, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('is_published', true)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error(error);
+        container.innerHTML = '<p>Error loading posts.</p>';
+        return;
+    }
+
+    if (posts.length === 0) {
+        container.innerHTML = '<p>No articles found.</p>';
+        return;
+    }
+
+    // Clear loading text
+    container.innerHTML = '';
+
+    // Generate HTML for each post
+    posts.forEach(post => {
+        const date = new Date(post.created_at).toLocaleDateString();
+        
+        const card = `
+            <div class="article-card">
+                <h2>${escapeHtml(post.title)}</h2>
+                <p class="article-meta">Posted on ${date}</p>
+                <p class="article-excerpt">${escapeHtml(post.excerpt)}</p>
+                <!-- Link to the generic template with a query parameter -->
+                <a href="article.html?slug=${post.slug}" class="btn btn-primary">Read More</a>
+            </div>
+        `;
+        container.innerHTML += card;
+    });
+
+    // Simple security helper
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+});
+</script>     
     <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
