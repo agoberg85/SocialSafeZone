@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog CMS - SafeZoneGuide</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        
+        /* Table Styles */
+        .cms-table { width: 100%; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-collapse: collapse; }
+        .cms-table th { background: #667eea; color: white; padding: 12px; text-align: left; }
+        .cms-table td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
+        .cms-table tr:hover { background: #f9fafb; }
+        
+        /* Badges */
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        .badge-active { background: #d1fae5; color: #065f46; }
+        .badge-inactive { background: #fee2e2; color: #991b1b; }
+        
+        /* Modal & Forms */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 12px; padding: 30px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+        .form-group textarea { min-height: 200px; font-family: monospace; }
+        .hint { font-size: 0.8rem; color: #666; margin-top: 5px; }
+        
+        .btn-small { padding: 5px 10px; font-size: 0.8rem; margin-right: 5px; cursor: pointer; border:none; border-radius: 4px;}
+    </style>
+</head>
+<body>
+    
+    <!-- Admin Nav -->
+    <nav class="navbar" style="background: #1a202c; padding: 1rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between;">
+            <a href="../index.html" style="color: white; font-weight: bold; text-decoration: none;">SafeZone Admin</a>
+            <div style="display: flex; gap: 20px;">
+                <a href="admin-formats.html" style="color: #cbd5e0; text-decoration: none;">Formats</a>
+                <a href="blog.html" style="color: white; text-decoration: none; border-bottom: 2px solid white;">Blog</a>
+                <a href="../index.html" style="color: #cbd5e0; text-decoration: none;">Exit</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Blog Posts</h1>
+            <button id="new-post-btn" class="btn btn-primary">+ New Post</button>
+        </div>
+
+        <div id="loading-state" style="text-align: center; padding: 40px;">
+            <p>Loading posts...</p>
+        </div>
+
+        <div id="posts-table" style="display: none;">
+            <table class="cms-table">
+                <thead>
+                    <tr>
+                        <th>Title / Slug</th>
+                        <th>Created</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="posts-tbody">
+                    <!-- JS fills this -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Edit/New Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title" style="margin-top:0;">New Post</h2>
+            <form id="post-form">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="title" required placeholder="e.g. 2025 Instagram Guide">
+                    </div>
+                    <div class="form-group">
+                        <label>Slug (URL)</label>
+                        <input type="text" id="slug" required placeholder="e.g. 2025-instagram-guide">
+                        <div class="hint">https://socialsafezone.com/blog/<strong>slug</strong>.html</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Cover Image URL (Optional)</label>
+                    <input type="url" id="image-url" placeholder="https://...">
+                </div>
+
+                <div class="form-group">
+                    <label>Excerpt (SEO Description)</label>
+                    <textarea id="excerpt" style="min-height: 80px;" placeholder="Short summary for Google and Social Media previews..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Content (HTML)</label>
+                    <textarea id="content" required placeholder="<p>Write your article here...</p>"></textarea>
+                    <div class="hint">Use HTML tags: &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;strong&gt;</div>
+                </div>
+
+                <div class="form-group" style="background: #f7fafc; padding: 10px; border-radius: 6px;">
+                    <label style="display: flex; align-items: center; gap: 10px; margin: 0; cursor: pointer;">
+                        <input type="checkbox" id="is-published" style="width: auto;">
+                        <span>Publish immediately (Triggers site rebuild)</span>
+                    </label>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" id="cancel-btn" class="btn" style="background: #edf2f7; color: #333;">Cancel</button>
+                    <button type="submit" id="save-btn" class="btn btn-primary">Save Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../static/config.js"></script>
+    <script src="../static/main.js"></script>
+    <script src="../static/admin-blog.js"></script>
+</body>
+</html>
