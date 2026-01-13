@@ -8,4 +8,9 @@
 /static/config.js
 /static/_BACKUP-safezones.json
 
+# Files
+/campaign-detail.html
+/campaigns.html
+/brief.html
+
 /GEMINI.md

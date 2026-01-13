@@ -261,7 +261,7 @@ Styles for the Tool (`app.html`)
 
 .format-selector label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-color-light); }
 .format-selector select { width: 100%; padding: 0.75rem; border-radius: var(--border-radius-medium); border: 1px solid var(--border-color); font-size: 1rem; font-family: var(--font-family); }
-.info-box { text-align: center; }
+.info-box { text-align: left; }
 .info-box p { margin: 0 0 0.75rem 0; color: var(--text-color-light); }
 #format-description { font-style: italic; font-size: 0.9rem; }
 #format-dimensions { font-weight: 600; color: var(--text-color-dark); }
