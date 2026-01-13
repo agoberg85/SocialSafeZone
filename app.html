@@ -33,7 +33,6 @@
                 <div></div>
                 <ul class="nav-links">
                     <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
-                    <li><a href="campaigns.html" class="nav-link">Build Campaign</a></li>
                     <li><a href="pricing.html" class="nav-link">Pricing</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="contact.html" class="nav-link">Contact</a></li>
@@ -95,46 +94,57 @@
 
         <div class="actions">
             <!-- BUTTON CLASSES STANDARDIZED -->
+    
             <div>
-                <button id="download-btn" class="btn btn-primary">
-                    <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">download</span>
-                    Download Mask
-                </button>
+                <div class="upload-wrapper">
+                    <button id="download-btn" class="btn btn-primary">
+                        <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">download</span>
+                        Download Mask
+                    </button>
+                    <span class="pro-badge">PRO</span>
+                </div>
                 <div id="download-counter" style="text-align: center; margin: 10px 0; font-size: 14px; color: #666;">
                     <span id="download-counter-text"></span>
                 </div>    
-            </div>        
+            </div>
+
+   
             <div class="upload-actions">
+                <!-- Image Upload (Now Pro) -->
                 <div class="app-btn">
                     <div class="upload-wrapper">
                         <label for="image-upload-input" class="btn btn-primary">
                             <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">image</span>
-                            Upload Image</label>
-                            <input 
-                                type="file" 
-                                id="image-upload-input" 
-                                accept="image/jpeg,image/jpg,image/png,image/webp"
-                                aria-label="Upload image file"
-                            >
+                            Upload Image
+                        </label>
+                        <input 
+                            type="file" 
+                            id="image-upload-input" 
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                            aria-label="Upload image file"
+                        >
+                        <span class="pro-badge">PRO</span>
                     </div>
                     <div id="upload-counter" style="text-align: center; margin: 10px 0; font-size: 14px; color: #666;">
                         <span id="upload-counter-text"></span>
                     </div>
                 </div>
-
+            
+                <!-- Video Upload (Already Pro) -->
                 <div class="upload-wrapper app-btn">
-                    
                     <label for="video-upload-input" class="btn btn-primary">
                         <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">video_file</span>
-                        Upload Video</label>
-                        <input 
-                            type="file" 
-                            id="video-upload-input" 
-                            accept="video/mp4,video/webm"
-                            aria-label="Upload video file"
-                        >
+                        Upload Video
+                    </label>
+                    <input 
+                        type="file" 
+                        id="video-upload-input" 
+                        accept="video/mp4,video/webm"
+                        aria-label="Upload video file"
+                    >
                     <span class="pro-badge">PRO</span>
                 </div>
+            
                 <button id="clear-btn" class="btn btn-danger">
                     <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">delete</span>
                     Clear Media

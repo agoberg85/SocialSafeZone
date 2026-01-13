@@ -44,12 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Handle 'Go Pro' link separately as it might be on pages without the main nav
         if (goProLink) {
-            const baseStripeUrl = goProLink.href.split('?')[0];
+            const baseStripeUrl = goProLink.href.split('?')[0]; // Keep the base URL
+            
             if (session) {
+                // User IS logged in:
+                // 1. Attach their ID so Stripe knows who they are
                 goProLink.href = `${baseStripeUrl}?client_reference_id=${session.user.id}`;
+                // 2. Set text to 'Get Pro'
+                goProLink.textContent = 'Get Pro';
             } else {
-                goProLink.textContent = 'Login to Get Pro';
-                goProLink.href = 'login.html';
+                // User is NOT logged in:
+                // 1. Send them to login, but tell login to send them back here (?next=pricing.html)
+                goProLink.href = 'login.html?next=pricing.html'; 
+                // 2. Update text to call to action
+                goProLink.textContent = 'Start 7 day Free Trial'; 
             }
         }
 
