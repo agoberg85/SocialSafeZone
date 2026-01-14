@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (session) {
                 loginButtonNav.classList.add('hidden');
                 userMenu.classList.remove('hidden');
+                // Ensure the user menu (which is flex) displays correctly
+                userMenu.style.display = 'flex'; 
+                
                 if (welcomeLink) {
                     welcomeLink.textContent = `Welcome, ${session.user.email.split('@')[0]}!`;
                 }
@@ -34,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } else {
                 userMenu.classList.add('hidden');
+                userMenu.style.display = 'none'; // Explicitly hide
                 loginButtonNav.classList.remove('hidden');
                 window.app.userProfile = null;
             }
@@ -57,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 1. Send them to login, but tell login to send them back here (?next=pricing.html)
                 goProLink.href = 'login.html?next=pricing.html'; 
                 // 2. Update text to call to action
-                goProLink.textContent = 'Start 7 day Free Trial'; 
+                goProLink.textContent = 'Sign up to PRO'; 
             }
         }
 
@@ -82,23 +86,57 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', async () => {
             await window.app.supabaseClient.auth.signOut();
-            window.location.href = '/index.html';
+            window.location.href = 'index.html';
         });
     }
 
-    // Add hamburger menu functionality if it exists
-    const hamburger = document.querySelector('.hamburger');
+    // --- NEW NAVIGATION DRAWER LOGIC ---
+    const hamburger = document.getElementById('hamburger-btn');
+    const closeMenuBtn = document.getElementById('close-menu');
+    const navPanel = document.getElementById('nav-panel');
+    const navOverlay = document.getElementById('nav-overlay');
+
+    function toggleMenu() {
+        if (!navPanel) return;
+
+        // Toggle the active class on panel and overlay
+        const isActive = navPanel.classList.contains('active');
+        
+        if (isActive) {
+            navPanel.classList.remove('active');
+            if(navOverlay) navOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Enable scrolling
+        } else {
+            navPanel.classList.add('active');
+            if(navOverlay) navOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Disable scrolling
+        }
+    }
+
+    // Open Menu
     if (hamburger) {
-        const navPanel = document.querySelector('.nav-panel');
-        const menuIcon = hamburger.querySelector('.burger-menu');
-
-        hamburger.addEventListener('click', () => {
-            if (navPanel && menuIcon) {
-                const isActive = navPanel.classList.toggle('active');
-                menuIcon.textContent = isActive ? 'close' : 'menu';
-            }
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent immediate bubbling
+            toggleMenu();
         });
     }
+
+    // Close Menu (X Button)
+    if (closeMenuBtn) {
+        closeMenuBtn.addEventListener('click', toggleMenu);
+    }
+
+    // Close Menu (Click Overlay)
+    if (navOverlay) {
+        navOverlay.addEventListener('click', toggleMenu);
+    }
+
+    // Close Menu (Escape Key)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navPanel && navPanel.classList.contains('active')) {
+            toggleMenu();
+        }
+    });
 
     // Initialize the Coloris color picker if the function is available
     if (typeof Coloris === 'function') {

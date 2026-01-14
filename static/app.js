@@ -272,7 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const { isPro } = await verifyProStatus();
 
         if (!isPro) {
-            alert('🚫 Downloads are a Pro feature.\n\nStart your 7-day free trial to download unlimited masks!');
+            // UPDATED TEXT
+            alert('🚫 Downloads are a Pro feature.\n\nUpgrade to Pro ($8/mo) to download unlimited masks and speed up your workflow!');
             window.location.href = 'pricing.html';
             return;
         }
@@ -300,7 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const { isPro } = await verifyProStatus();
         if (!isPro) {
             event.preventDefault();
-            alert('🚫 Image uploads are a Pro feature.\n\nStart your 7-day free trial to upload your creatives!');
+            // UPDATED TEXT
+            alert('🚫 Image uploads are a Pro feature.\n\nUpgrade to Pro ($8/mo) to preview your own creatives!');
             window.location.href = 'pricing.html';
         }
     });

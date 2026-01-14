@@ -63,15 +63,18 @@ a:hover { text-decoration: underline; }
     font-weight: 500;
     text-align: center;
     text-decoration: none; /* Remove underline from <a> tags used as buttons */
+    text-wrap: nowrap;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
 .btn-primary { background-color: var(--primary-color); color: white; }
 .btn-primary:hover { background-color: var(--primary-hover); color: white; }
+.btn-secondary {border-color: #ccc; background: white; color: #333;}
 .btn-danger { background-color: var(--danger-color); color: white; }
 .btn-danger:hover { background-color: var(--danger-hover); color: white; }
 
-.btn-lg { font-size: 1.1rem; padding: 0.8rem 2rem; }
+.btn-lg { font-size: 1.1rem; padding: 0.8rem 1.25rem;  }
+.btn-sm { font-size: 0.8rem; padding: 0.6rem 1rem;  }
 .btn-square {
     width: 36px;
     aspect-ratio: 1 / 1;
@@ -94,87 +97,245 @@ a:hover { text-decoration: underline; }
 
 /* --- Header & Navigation --- */
 .main-header {
-    background-color: rgba(255,255,255, 0.6);
-    padding: 1rem 2rem;
-    border: 1px solid var(--border-color);
     position: fixed;
-    width: calc(100% - 40px);
-    height: 80px;
-    z-index: 10;
-    box-sizing: border-box;
     top: 20px;
-    margin: 0 20px;
-    border-radius: 50px;
-    backdrop-filter: blur(8px);
+    left: 0;
+    width: 100%;
+    padding: 0 20px;
+    z-index: 100;
+    pointer-events: none; /* Let clicks pass through empty space */
 }
 
 .main-header nav {
-display: flex;
-justify-content: space-between;
-align-items: center;
-height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* 1. Logo Box */
+.logo-box {
+    background-color: var(--surface-color);
+    padding: 0.8rem 1.5rem;
+    border-radius: var(--border-radius-big);
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    pointer-events: auto; /* Re-enable clicks */
+    display: inline-flex;
+    align-items: center;
 }
 
 .logo {
-font-size: 1.5rem;
-font-weight: 700;
-color: var(--text-color-dark);
-text-decoration: none;
-}
-
-.nav-panel {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.nav-links {
-list-style: none;
-display: flex;
-gap: 1.5rem;
-margin: 0;
-padding: 0;
-}
-
-.nav-link {
-    text-decoration: none;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--text-color-dark);
-    font-weight: 500;
 }
 
-#user-session-cta {
-    display: flex;
-    align-items: center;
-}
-
-#user-menu {
-display: none; /* Initially hidden */
-align-items: center;
-gap: 1rem;
-}
-
+/* 2. Hamburger Box */
 .hamburger {
-    display: none;
+    display: flex; /* Always visible now */
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-big);
+    padding: 0.8rem;
+    cursor: pointer;
+    pointer-events: auto; /* Re-enable clicks */
+    transition: transform 0.2s ease;
+}
+
+.hamburger:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+}
+
+.hamburger .material-icons {
+    font-size: 1.5rem;
+    color: var(--text-color-dark);
+}
+
+/* 3. The Slide-Out Panel (Drawer) */
+.nav-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;    
+    bottom: 20px;
+    height: calc(100vh - 40px);
+    background-color: var(--surface-color);
+    z-index: 200;
+    transform: translateX(calc(100% + 20px));
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    pointer-events: auto;
+    overflow-y: auto;
+    border-radius: var(--border-radius-big);
+    border: 1px solid var(--border-color);
+}
+
+/* Width settings based on your request */
+.nav-panel {
+    width: 40vw; /* Desktop: 40% */
+}
+
+/* Active State (Added via JS) */
+.nav-panel.active {
+    transform: translateX(0);
+}
+
+/* 4. Overlay (Dark background) */
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 90; /* Behind panel, above content */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* 5. Content inside the Drawer */
+.nav-header {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+}
+
+.nav-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color-light);
+}
+
+.close-menu-btn {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
 }
 
-.hamburger .material-symbols-outlined {
-    font-size: 2rem;
+.close-menu-btn:hover {
+    background-color: var(--border-color-lighter);
+}
+
+.nav-links {
+    list-style: none;
+    flex-direction: column; /* Vertical stack */
+    align-items: flex-start;
+    width: 100%;
+    gap: 0;
+}
+
+.nav-links li {
+    width: 100%;
+}
+
+.nav-link {
+    display: block;
+    font-size: 1.5rem; /* Larger font for drawer */
+    font-weight: 500;
+    padding: 1.2rem 0;
     color: var(--text-color-dark);
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* User Session Area in Drawer */
+#user-session-cta {
+    margin-top: auto; /* Push to bottom */
+    padding-top: 2rem;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#user-menu {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+}
+
+.nav-cta {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Adjustments for the Profile link inside drawer */
+#welcome-link {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: block;
+    text-align: center;
 }
 
 /* --- Landing Page Sections --- */
-.topgap {padding: 4rem 0 0 0;}
-.topgap-big {padding: 8rem 0 0 0;}
+.topgap {padding: 100px 0 0 0;}
+.topgap-big {padding: 100px 0 0 0;}
 
 .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
+    grid-template-areas:
+        "hero-text hero-img"
+        "hero-subtext hero-img"
+        "hero-ctas hero-img";    
+}
+
+.hero-text {
+    grid-area: hero-text;
+}
+
+.hero-subtext {
+    grid-area: hero-subtext;
+}
+
+.hero-ctas {
+    grid-area: hero-ctas;
+    display: flex;
+    gap: 6px;
+    /* FIX FOR BUTTONS: Allow them to stack if the column gets too narrow */
+    flex-wrap: wrap; 
+}
+
+.hero-img {
+    grid-area: hero-img;
+    align-self: stretch; 
+    /* FIX FOR IMAGE: This prevents the 'Grid Blowout' */
+    min-width: 0; 
+}
+
+/* Ensure the image inside respects the constraints */
+.hero-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* Optional: helps align image vertically if row heights vary */
+    max-height: 100%; 
 }
 
 .hero { padding: 10rem 0 0 0; }
@@ -201,7 +362,7 @@ gap: 1rem;
 }
 
 .why-grid {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
 }
 
 .step-card, .feature-card {
@@ -241,7 +402,7 @@ Styles for the Tool (`app.html`)
     justify-content: center; 
     align-items: center; 
     background-color: var(--surface-color); 
-    padding: 1.5rem; min-height: 800px; 
+    padding: 1rem; min-height: 800px; 
     position: relative; 
     overflow: hidden; 
 }
@@ -251,11 +412,11 @@ Styles for the Tool (`app.html`)
 
 .controls, .info-box, .mask-controls { 
     background-color: var(--surface-color); 
-    padding: 1.5rem; 
+    padding: 1rem; 
 }
 .mask-controls {height: 100%;}
 .platform-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
-.platform-nav button { padding: 0.5rem 1rem; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-color-light); cursor: pointer; border-radius: var(--border-radius-medium); font-size: 0.9rem; transition: all 0.2s ease; }
+.platform-nav button { padding: 0.5rem; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-color-light); cursor: pointer; border-radius: var(--border-radius-medium); font-size: 0.9rem; transition: all 0.2s ease; }
 .platform-nav button:hover { background-color: #e9ecef; }
 .platform-nav button.active { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
 
@@ -283,7 +444,7 @@ select {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(-
     align-items: start;
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 1.5rem 1rem 1rem 1rem;
+    padding: 1rem 1rem 1rem 1rem;
     border: 1px solid var(--border-color);
     border-top: 0px;
     background: var(--surface-color);
@@ -340,7 +501,7 @@ Styles for Campaign pages
 
 .studio-features-card {
     background: var(--surface-color); 
-    padding: 1.5rem;     
+    padding: 1rem;     
 }
 
 .campaigns-grid {
@@ -429,6 +590,7 @@ Styles for Contact & Blog Pages
     padding: 2.5rem;
     background-color: var(--surface-color);
     border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-big);
 }
 .contact-card p { margin-bottom: 1.5rem; }
 .contact-card strong { color: var(--text-color-dark); }
@@ -445,6 +607,7 @@ Styles for Contact & Blog Pages
     padding: 2rem;
     border: 1px solid var(--border-color);
     transition: transform 0.2s ease-in-out;
+    border-radius: var(--border-radius-big);
 }
 .article-card:hover { transform: translateY(-5px); }
 .article-card h2 { margin-bottom: 0.5rem; }
@@ -708,7 +871,7 @@ Styles for Auth Page (`login.html`)
 }
 
 .collapsable-content {
-    padding: 1.5rem;
+    padding: 1rem;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
 }
@@ -813,7 +976,7 @@ Styles for Auth Page (`login.html`)
 /* --- Mobile Responsiveness --- */
 @media (max-width: 992px) {
     .steps-grid { grid-template-columns: 1fr; }
-    .features-grid { grid-template-columns: 1fr; }
+    .features-grid, .why-grid { grid-template-columns: 1fr; }
     .content-wrapper { flex-direction: column; }
     .canvas-wrapper { order: 2; min-height: 500px; }
     .sidebar { order: 1; }
@@ -822,49 +985,27 @@ Styles for Auth Page (`login.html`)
 
 @media (max-width: 768px) {
     .nomobile {display: none;}
+
     .nav-panel {
-        display: none;
-        position: absolute;
-        top: 80px;
-        left: 0;
-        width: 100%;
-        background-color: var(--surface-color);
-        border-bottom: 1px solid var(--border-color);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem 2rem;
-        box-sizing: border-box;
+        width: calc(100vw - 40px);
     }
 
-    .nav-panel.active {
-        display: flex;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        width: 100%;
-        gap: 1rem;
-    }
-
-    .nav-links li {
-        width: 100%;
-    }
-    #user-menu {width: 100%;}
-    #user-session-cta {
-        width: 100%;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-top: 1rem;
-    }
-
-    .hamburger {
-        display: block;
-    }    
-    #logout-button {margin-left: auto;}
-    .topgap {padding: 8rem 10px 0 10px;}
-    .topgap-big {padding: 8rem 10px 0 10px;}
+    .topgap {padding: 50px 10px 0 10px;}
+    .topgap-big {padding: 70px 10px 0 10px;}
     .subtitle {padding: 1rem 0 2.6rem 0; width: 100%; margin: 0 auto;}
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero-text"
+            "hero-img"
+            "hero-subtext "
+            "hero-ctas";    
+    }
+    .hero-ctas {
+        justify-content: center;
+    }    
+
     .features {
         padding: 2rem 0;
       }    
