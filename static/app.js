@@ -206,18 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const badges = document.querySelectorAll('.pro-badge');
             badges.forEach(b => b.style.display = 'none');
             
-            // Hide counters
-            const uploadCounter = document.getElementById('upload-counter-text');
-            if(uploadCounter) uploadCounter.style.display = 'none';
-
         } else {
             // Add visual lock style
             videoUploadLabel.classList.add('disabled');
             imageUploadLabel.classList.add('disabled');
             
-            // Show "View Only" message
-            const uploadCounter = document.getElementById('upload-counter-text');
-            if(uploadCounter) uploadCounter.innerHTML = '🔒 Upgrade to Upload';
+            // Note: We removed the counter text update here
         }
     };
 

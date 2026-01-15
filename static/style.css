@@ -1,7 +1,3 @@
-/* ---
-Design System for SafeZoneGuide
---- */
-
 :root {
     /* Color Palette */
     --primary-color: #0d6efd;
@@ -388,10 +384,15 @@ Styles for the Tool (`app.html`)
 .content-wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+        "main format"
+        "main info"
+        "main customize"
+        "main upload"; 
     border: 1px solid var(--border-color);
     background: var(--border-color);
     gap: 1px;
-    border-radius: var(--border-radius-big) var(--border-radius-big) 0 0;
+    border-radius: var(--border-radius-big);
     overflow: hidden;
   }
 
@@ -410,10 +411,19 @@ Styles for the Tool (`app.html`)
 #video-preview { z-index: 1; display: none; }
 #safezone-canvas { z-index: 2; background: none; }
 
-.controls, .info-box, .mask-controls { 
+.controls, .info-box, .mask-controls, .upload-actions { 
     background-color: var(--surface-color); 
     padding: 1rem; 
 }
+
+.canvas-wrapper {grid-area: main;}
+.controls {grid-area: format;}
+.info-box {grid-area: info;}
+.mask-controls {grid-area: customize;}
+.upload-actions {grid-area: upload;}            
+
+
+
 .mask-controls {height: 100%;}
 .platform-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
 .platform-nav button { padding: 0.5rem; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-color-light); cursor: pointer; border-radius: var(--border-radius-medium); font-size: 0.9rem; transition: all 0.2s ease; }
@@ -451,8 +461,17 @@ select {width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: var(-
     border-radius: 0 0 var(--border-radius-big) var(--border-radius-big);
     overflow: hidden;    
   }
-.upload-actions { display: flex; gap: 10px; align-items: start; flex-wrap: wrap; }
-.upload-wrapper { position: relative; }
+.upload-actions { 
+    display: flex; 
+    gap: 10px; 
+    align-items: start; 
+    flex-wrap: wrap; 
+    flex-direction: column;
+}
+.upload-wrapper { 
+    position: relative; 
+    width: 50%;
+}
 .upload-label { display: inline-block; } /* Allow button styling */
 .pro-badge { background: var(--pro-color); color: var(--text-color-dark); font-size: 0.6rem; font-weight: bold; padding: 2px 5px; border-radius: var(--border-radius-small); position: absolute; top: -8px; right: -8px; }
 input[type="file"] { display: none; }
@@ -974,15 +993,6 @@ Styles for Auth Page (`login.html`)
 }
 
 /* --- Mobile Responsiveness --- */
-@media (max-width: 992px) {
-    .steps-grid { grid-template-columns: 1fr; }
-    .features-grid, .why-grid { grid-template-columns: 1fr; }
-    .content-wrapper { flex-direction: column; }
-    .canvas-wrapper { order: 2; min-height: 500px; }
-    .sidebar { order: 1; }
-    .collapsable-content { max-height: fit-content; } /* Ensure content is visible on mobile by default */
-}
-
 @media (max-width: 768px) {
     .nomobile {display: none;}
 
@@ -1012,10 +1022,20 @@ Styles for Auth Page (`login.html`)
     .hero h1 { font-size: 2.25rem; }
     .app-main { padding: 1rem; }
     .actions { flex-direction: column; align-items: stretch; }
-    .upload-actions { width: 100%; }
-    .app-btn {width: calc(50% - 5px);}
+    .upload-actions { flex-direction: column; }
+    .upload-wrapper { width: 100%; }
+    .app-btn {width: 100%;}
     .actions .btn { width: 100%; }
-    .content-wrapper {grid-template-columns: 1fr}
+
+    .content-wrapper {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "format"
+            "main"
+            "info"
+            "customize"
+            "upload"; 
+    }    
 
     .campaign-header {
         flex-direction: column;

@@ -77,7 +77,6 @@
                 <canvas id="safezone-canvas"></canvas>
             </div>
 
-            <div class="sidebar">
                 <div class="controls">
                     <div class="platform-nav"></div>
                     <div class="format-selector">
@@ -103,57 +102,51 @@
                         <input type="range" id="mask-opacity-input" min="0" max="1" step="0.1" value="0.4">
                     </div>
                 </div>
-            </div>
+
+                <div class="upload-actions">
+                    <div style="display: flex; gap: 10px;">
+                        <!-- Image Upload (Pro Feature) -->
+                        <div class="upload-wrapper app-btn" style="flex: 1;">
+                            <label for="image-upload-input" class="btn btn-primary">
+                                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">image</span>
+                                Add Image
+                            </label>
+                            <input 
+                                type="file" 
+                                id="image-upload-input" 
+                                accept="image/jpeg,image/jpg,image/png,image/webp"
+                                aria-label="Upload image file"
+                            >
+                            <span class="pro-badge">PRO</span>
+                        </div>
+
+                        <!-- Video Upload (Pro Feature) -->
+                        <div class="upload-wrapper app-btn" style="flex: 1;">
+                            <label for="video-upload-input" class="btn btn-primary">
+                                <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">video_file</span>
+                                Add Video
+                            </label>
+                            <input 
+                                type="file" 
+                                id="video-upload-input" 
+                                accept="video/mp4,video/webm"
+                                aria-label="Upload video file"
+                            >
+                            <span class="pro-badge">PRO</span>
+                        </div>
+                    </div>
+
+                    <!-- Clear Button -->
+                    <button id="clear-btn" class="btn btn-danger" style="width: 100%; margin-top: 10px;">
+                        <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">delete</span>
+                        Clear Media
+                    </button>
+                </div>
+
+
         </div>
 
-        <div class="actions">
-            <!-- BUTTON CLASSES STANDARDIZED -->
-    
-            <div></div> 
 
-   
-            <div class="upload-actions">
-                <!-- Image Upload (Now Pro) -->
-                <div class="app-btn">
-                    <div class="upload-wrapper">
-                        <label for="image-upload-input" class="btn btn-primary">
-                            <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">image</span>
-                            Upload Image
-                        </label>
-                        <input 
-                            type="file" 
-                            id="image-upload-input" 
-                            accept="image/jpeg,image/jpg,image/png,image/webp"
-                            aria-label="Upload image file"
-                        >
-                        <span class="pro-badge">PRO</span>
-                    </div>
-                    <div id="upload-counter" style="display:none">
-                        <span id="upload-counter-text"></span>
-                    </div>
-                </div>
-            
-                <!-- Video Upload (Already Pro) -->
-                <div class="upload-wrapper app-btn">
-                    <label for="video-upload-input" class="btn btn-primary">
-                        <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">video_file</span>
-                        Upload Video
-                    </label>
-                    <input 
-                        type="file" 
-                        id="video-upload-input" 
-                        accept="video/mp4,video/webm"
-                        aria-label="Upload video file"
-                    >
-                    <span class="pro-badge">PRO</span>
-                </div>
-            
-                <button id="clear-btn" class="btn btn-danger">
-                    <span class="material-icons" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">delete</span>
-                    Clear Media
-                </button>
-            </div>
-        </div>
         
     </main>
 
