@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Prevent right-click/save on canvas
     canvas.addEventListener('contextmenu', (e) => {
         e.preventDefault();
-        alert('⚠️ To save the mask, please upgrade to Pro and use the Download button.');
         return false;
     });
     
