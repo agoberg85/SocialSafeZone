@@ -20,29 +20,43 @@
 
     <header class="main-header">
         <nav>
-            <a href="index.html" class="logo">SocialSafeZone</a>
-            <div class="nav-panel">
-                <div></div>
+            <!-- Logo in White Box -->
+            <a href="index.html" class="logo-box">
+                <span class="logo">SocialSafeZone</span>
+            </a>
+    
+            <!-- The Slide-out Panel (Drawer) -->
+            <div class="nav-panel" id="nav-panel">
+                
+                <!-- Close Button (Inside the drawer) -->
+                <div class="nav-header">
+                    <button class="close-menu-btn" id="close-menu">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+    
                 <ul class="nav-links">
                     <li><a href="app.html" class="nav-link">Safezone Tool</a></li>
                     <li><a href="pricing.html" class="nav-link">Pricing</a></li>
                     <li><a href="blog.html" class="nav-link">Blog</a></li>
                     <li><a href="contact.html" class="nav-link">Contact</a></li>
                 </ul>
+    
                 <div id="user-session-cta">
-                    <!-- Default state (user is logged out) -->
+                    <!-- Default state -->
                     <a href="login.html" id="login-button-nav" class="btn btn-primary nav-cta">Login / Sign Up</a>
     
-                    <!-- Logged-in state (hidden by default) -->
+                    <!-- Logged-in state -->
                     <div id="user-menu" class="hidden">
                         <a href="profile.html" id="welcome-link" class="nav-link">Welcome!</a>
                         <button id="logout-button" class="btn btn-danger">Logout</button>
                     </div>
-    
                 </div>
             </div>
-            <button class="hamburger">
-                <span class="material-icons burger-menu" style="vertical-align: middle; font-size: 1.2rem; margin-right: 0.5rem;">menu</span>
+    
+            <!-- Hamburger Menu (Top Right) -->
+            <button class="hamburger" id="hamburger-btn">
+                <span class="material-icons">menu</span>
             </button>
         </nav>
     </header>
