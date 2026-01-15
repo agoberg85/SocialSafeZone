@@ -293,8 +293,8 @@ a:hover { text-decoration: underline; }
 }
 
 /* --- Landing Page Sections --- */
-.topgap {padding: 100px 0 0 0;}
-.topgap-big {padding: 100px 0 0 0;}
+.topgap {padding: 20px 0 0 0;}
+.topgap-big {padding: 20px 0 0 0;}
 
 .hero-grid {
     display: grid;

@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const formatSelect = document.getElementById('format-select');
     const canvas = document.getElementById('safezone-canvas');
     const ctx = canvas.getContext('2d');
-    const downloadBtn = document.getElementById('download-btn');
     const clearBtn = document.getElementById('clear-btn');
     const descriptionText = document.getElementById('format-description');
     const dimensionsText = document.getElementById('format-dimensions');
@@ -198,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateFeatureAccess = async () => {
         const { isPro } = await verifyProStatus();
         
-        // Visual indicator that these are locked/unlocked
         if (isPro) {
             videoUploadInput.disabled = false;
             imageUploadInput.disabled = false;
@@ -209,17 +207,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const badges = document.querySelectorAll('.pro-badge');
             badges.forEach(b => b.style.display = 'none');
             
-            // Hide counters (since they are irrelevant)
-            document.getElementById('download-counter-text').style.display = 'none';
-            document.getElementById('upload-counter-text').style.display = 'none';
+            // Hide counters
+            const uploadCounter = document.getElementById('upload-counter-text');
+            if(uploadCounter) uploadCounter.style.display = 'none';
+
         } else {
             // Add visual lock style
             videoUploadLabel.classList.add('disabled');
             imageUploadLabel.classList.add('disabled');
             
             // Show "View Only" message
-            document.getElementById('download-counter-text').innerHTML = '🔒 Upgrade to Download';
-            document.getElementById('upload-counter-text').innerHTML = '🔒 Upgrade to Upload';
+            const uploadCounter = document.getElementById('upload-counter-text');
+            if(uploadCounter) uploadCounter.innerHTML = '🔒 Upgrade to Upload';
         }
     };
 
@@ -266,35 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('profileLoaded', updateFeatureAccess);
 
     // --- Event Listeners ---
-
-    // 1. Download Button (PRO Only)
-    downloadBtn.addEventListener('click', async () => {
-        const { isPro } = await verifyProStatus();
-
-        if (!isPro) {
-            // UPDATED TEXT
-            alert('🚫 Downloads are a Pro feature.\n\nUpgrade to Pro ($8/mo) to download unlimited masks and speed up your workflow!');
-            window.location.href = 'pricing.html';
-            return;
-        }
-
-        const formatData = safeZones[currentPlatform]?.[currentFormat];
-        if (!formatData) return;
-
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = formatData.width;
-        tempCanvas.height = formatData.height;
-        const tempCtx = tempCanvas.getContext('2d');
-
-        const maskPath = getMaskPath(formatData);
-        tempCtx.fillStyle = hexToRgba(maskColor, 0.5); // Fixed opacity for download
-        tempCtx.fill(maskPath);
-
-        const link = document.createElement('a');
-        link.download = `${currentPlatform}_${currentFormat.replace(/\s/g, '-')}_mask.png`;
-        link.href = tempCanvas.toDataURL('image/png');
-        link.click();
-    });
 
     // 2. Image Upload (PRO Only)
     imageUploadInput.addEventListener('click', async (event) => {
