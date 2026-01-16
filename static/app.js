@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageUploadLabel = document.querySelector('label[for="image-upload-input"]');
     const maskColorInput = document.getElementById('mask-color-input');
     const maskOpacityInput = document.getElementById('mask-opacity-input');
+    const downloadBtn = document.getElementById('download-btn');
 
     // --- State Variables ---
     let currentPlatform = "Instagram";
@@ -258,6 +259,41 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('profileLoaded', updateFeatureAccess);
 
     // --- Event Listeners ---
+
+    // Download Button (PRO Only)
+    downloadBtn.addEventListener('click', async () => {
+        const { isPro } = await verifyProStatus();
+
+        if (!isPro) {
+            alert('🚫 Downloading masks is a Pro feature.\n\nUpgrade to Pro ($8/mo) to get unlimited high-res assets for Photoshop, Canva, and Premiere!');
+            window.location.href = 'pricing.html';
+            return;
+        }
+
+        const formatData = safeZones[currentPlatform]?.[currentFormat];
+        if (!formatData) return;
+
+        // Create a temporary canvas to draw the mask at full resolution
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = formatData.width;
+        tempCanvas.height = formatData.height;
+        const tempCtx = tempCanvas.getContext('2d');
+
+        // Draw the mask
+        const maskPath = getMaskPath(formatData); // This function uses the path data
+        tempCtx.fillStyle = hexToRgba(maskColor, 1.0); // Force 100% opacity for the mask itself? Or use user opacity?
+        // Usually designers want the mask somewhat transparent or solid. 
+        // Let's use the user's current color settings:
+        tempCtx.fillStyle = hexToRgba(maskColor, maskOpacity); 
+        tempCtx.fill(maskPath);
+
+        // Trigger Download
+        const link = document.createElement('a');
+        const filename = `${currentPlatform}_${currentFormat.replace(/\s/g, '-')}_mask.png`;
+        link.download = filename.toLowerCase();
+        link.href = tempCanvas.toDataURL('image/png');
+        link.click();
+    });
 
     // 2. Image Upload (PRO Only)
     imageUploadInput.addEventListener('click', async (event) => {

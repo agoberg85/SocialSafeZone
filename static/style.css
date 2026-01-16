@@ -1041,10 +1041,7 @@ Styles for Auth Page (`login.html`)
         flex-direction: column;
     }
     
-    .campaign-summary-grid, .campaign-content-grid, .formats-grid {
-        grid-template-columns: 1fr;
-    }
-    .pricing-grid {
+    .campaign-summary-grid, .campaign-content-grid, .formats-grid, .features-grid, .why-grid, .pricing-grid {
         grid-template-columns: 1fr;
     }
 
